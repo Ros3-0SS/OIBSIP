@@ -2,7 +2,7 @@
 
 ## Oasis Infobyte — Data Analytics Level 1, Task 1
 
-Exploratory Data Analysis of the supplied **Online Retail** transaction dataset.
+Exploratory Data Analysis of the Online Retail transaction dataset.
 
 ### Project status
 
@@ -12,7 +12,15 @@ Exploratory Data Analysis of the supplied **Online Retail** transaction dataset.
 - Visualisations: ✅
 - Findings and recommendations: ✅
 - Professional README: ✅
-- GitHub upload: pending repository access
+- Raw dataset: 🔗 Kaggle source linked below
+
+### Dataset source
+
+The raw **Online Retail** dataset used for this project was obtained from Kaggle:
+
+**Kaggle dataset:** https://www.kaggle.com/datasets/thedevastator/online-retail-transaction-data
+
+The raw CSV is not duplicated in this repository in order to keep the repository lightweight. Please use the Kaggle source above to obtain the original dataset.
 
 ### Dataset summary
 
@@ -75,8 +83,6 @@ The project includes:
 ```text
 DataAnalytics-L1-EDARetailSales/
 ├── data/
-│   ├── raw/
-│   │   └── online_retail.csv
 │   └── cleaned/
 │       └── online_retail_cleaned.csv
 ├── outputs/
