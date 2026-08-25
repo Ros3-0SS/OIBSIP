@@ -30,7 +30,6 @@ Customer segmentation using the **UCI Online Retail dataset**, RFM analysis and 
 - Scikit-learn
 - Jupyter Notebook
 - Git & GitHub
-- UCI Machine Learning Repository
 
 ## 📁 Repository Structure
 
