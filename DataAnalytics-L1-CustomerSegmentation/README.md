@@ -55,7 +55,6 @@ DataAnalytics-L1-CustomerSegmentation/
 - Seaborn
 - Scikit-learn
 - Jupyter Notebook
-- UCI ML Repository / `ucimlrepo`
 
 ## How to Run
 
