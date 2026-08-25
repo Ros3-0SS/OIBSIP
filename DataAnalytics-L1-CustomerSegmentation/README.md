@@ -1,4 +1,4 @@
-# 🧠 Online Retail Customer Segmentation
+#  Online Retail Customer Segmentation
 
 ### OASIS INFOBYTE SIP — Data Analytics Level 1 • Task 2
 
