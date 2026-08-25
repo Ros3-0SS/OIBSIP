@@ -15,20 +15,22 @@ The projects focus on applying Python and data analytics techniques to real-worl
 
 Exploratory Data Analysis of retail sales data, including data cleaning, descriptive statistics, sales trends, visualisations, findings, and business recommendations.
 
-#### Task 2 — Customer Segmentation Analysis
+#### Task 2 — Online Retail Customer Segmentation
 `DataAnalytics-L1-CustomerSegmentation/`
 
-Customer segmentation using purchasing behaviour and **K-Means clustering**. The project will include data preparation, feature selection, standardisation, the Elbow Method, cluster visualisation, customer profiling, and marketing recommendations.
+Customer segmentation using the **UCI Online Retail dataset**, RFM analysis and **K-Means clustering**. The project includes data preparation, exploratory analysis, feature engineering, standardisation, the Elbow Method, silhouette scoring, cluster profiling, visualisation, and marketing recommendations.
 
 ## 🛠️ Tools & Technologies
 
 - Python
 - Pandas
+- NumPy
 - Matplotlib
 - Seaborn
 - Scikit-learn
 - Jupyter Notebook
 - Git & GitHub
+- UCI Machine Learning Repository
 
 ## 📁 Repository Structure
 
@@ -37,8 +39,14 @@ OIBSIP/
 ├── README.md
 ├── DataAnalytics-L1-EDARetailSales/
 └── DataAnalytics-L1-CustomerSegmentation/
+    ├── README.md
+    ├── requirements.txt
+    ├── data/
+    │   └── README.md
+    └── notebooks/
+        └── Online_Retail_Customer_Segmentation.ipynb
 ```
 
 ## 🎯 Internship Goal
 
-The goal of these projects is to strengthen practical data analytics skills by working through complete projects—from data preparation and analysis to visualisation, interpretation, and business recommendations.
+The goal of these projects is to strengthen practical data analytics skills by working through complete projects—from data preparation and analysis to visualisation, interpretation, machine learning, and business recommendations.
