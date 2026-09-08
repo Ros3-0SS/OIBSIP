@@ -80,4 +80,4 @@ The goal of these projects is to strengthen practical data analytics and machine
 ## 👩🏽‍💻 Author
 
 **Ntsako Sibanda**  
-Diploma in Financial Information Systems student | Aspiring Quantitative Analyst
+Aspiring Quantitative Analyst
