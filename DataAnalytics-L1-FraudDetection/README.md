@@ -3,61 +3,59 @@
 This project implements **Oasis Infobyte Data Analytics — Level 1, Task 3: Fraud Detection**.
 
 ## Objective
-Build a machine-learning pipeline that detects fraudulent financial transactions in a heavily imbalanced dataset. The project focuses on appropriate evaluation metrics, class-imbalance handling, model comparison and practical scalability.
+Build a machine-learning pipeline to detect fraudulent financial transactions in a heavily imbalanced dataset, with emphasis on SMOTE, model comparison and fraud-focused evaluation metrics.
 
 ## Dataset
-The recommended benchmark is the **Credit Card Fraud Detection** dataset containing 284,807 transactions, including 492 fraudulent transactions.
+The benchmark Credit Card Fraud Detection dataset contains **284,807 transactions**, including **492 fraudulent transactions (0.1727%)**. The raw CSV is intentionally not committed because it is about 151 MB and exceeds GitHub's normal single-file limit. Place it locally at `data/creditcard.csv` before running the notebook.
 
-Because the raw CSV is large, it is **not committed to this repository**. Download the dataset and place it here:
-
-```text
-data/creditcard.csv
-```
-
-See `data/README.md` for the expected filename and setup instructions.
-
-## What the notebook covers
-
-1. Dataset loading and inspection
-2. Class-imbalance analysis and fraud percentage
-3. Transaction-amount EDA
-4. Approximate time-of-day analysis
-5. Stratified train/test split
-6. SMOTE oversampling applied only to the training pipeline
-7. Logistic Regression
-8. Random Forest
-9. Precision, Recall, F1-score and ROC-AUC
-10. Confusion matrices and ROC curve
-11. Random Forest feature importance
+## Completed analysis
+1. Class imbalance analysis
+2. Stratified 80/20 train/test split
+3. Standardisation
+4. SMOTE oversampling applied only to the training data
+5. Logistic Regression
+6. Random Forest
+7. Precision, Recall, F1-score and ROC-AUC
+8. Confusion matrices
+9. ROC curve
+10. Random Forest feature importance
+11. Logistic Regression coefficient analysis
 12. Precision vs Recall discussion
-13. Scalability discussion for 1 million transactions/hour
+13. Scalability discussion
+
+## Results from the supplied dataset
+| Model | Precision | Recall | F1 | ROC-AUC |
+|---|---:|---:|---:|---:|
+| Logistic Regression | 0.3522 | 0.8878 | 0.5043 | 0.9674 |
+| Random Forest | **0.8000** | 0.8571 | **0.8276** | **0.9778** |
+
+The Random Forest provides the strongest overall balance in this run. Logistic Regression achieves slightly higher recall, which illustrates the precision–recall trade-off in fraud detection.
+
+### Most important Random Forest features
+The leading features were **V14, V17, V12, V10, V3, V16, V4, V9, V2 and V7**. These are anonymised PCA-derived variables, so they should not be interpreted as directly meaningful business attributes without additional feature documentation.
 
 ## Project structure
-
 ```text
 OIBSIP/
 └── DataAnalytics-L1-FraudDetection/
     ├── README.md
     ├── requirements.txt
     ├── data/
-    │   └── README.md
-    └── notebooks/
-        └── Fraud_Detection_Machine_Learning.ipynb
+    │   └── creditcard.csv   # local only; not committed
+    ├── notebooks/
+    │   └── Fraud_Detection_Machine_Learning.ipynb
+    └── results/
+        ├── class_distribution.svg
+        ├── confusion_matrices.svg
+        ├── feature_importance.svg
+        ├── logistic_coefficients.csv
+        ├── model_metrics.csv
+        ├── random_forest_feature_importance.csv
+        ├── results_summary.json
+        └── roc_curve.svg
 ```
 
-## Tools
-
-- Python
-- Pandas
-- NumPy
-- Scikit-learn
-- imbalanced-learn
-- Matplotlib
-- Seaborn
-- Jupyter Notebook
-
 ## How to run
-
 ```bash
 pip install -r requirements.txt
 jupyter notebook notebooks/Fraud_Detection_Machine_Learning.ipynb
@@ -66,5 +64,4 @@ jupyter notebook notebooks/Fraud_Detection_Machine_Learning.ipynb
 Then place `creditcard.csv` inside `data/` and run the notebook from top to bottom.
 
 ## Important note
-
-This is an educational internship project. Model performance should not be interpreted as production-ready fraud detection without additional validation, threshold optimisation, monitoring, security controls and domain-specific cost analysis.
+This is an educational internship project. The reported metrics are from one stratified hold-out split and should not be treated as production-ready fraud detection without threshold optimisation, cross-validation, cost-sensitive analysis, monitoring and domain validation.
