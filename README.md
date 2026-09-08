@@ -110,7 +110,7 @@ OIBSIP/
 
 ## 🎯 Internship Goal
 
-The goal of these projects is to strengthen practical data analytics and machine-learning skills by completing end-to-end projects—from data preparation and exploratory analysis to visualisation, modelling, evaluation, interpretation and business recommendations.
+The goal of these projects was to strengthen my practical data analytics and machine-learning skills by completing end-to-end projects—from data preparation and exploratory analysis to visualisation, modelling, evaluation, interpretation and business recommendations.
 
 ## 👩🏽‍💻 Author
 
