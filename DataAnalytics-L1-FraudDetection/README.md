@@ -19,9 +19,8 @@ The benchmark Credit Card Fraud Detection dataset contains **284,807 transaction
 8. Confusion matrices
 9. ROC curve
 10. Random Forest feature importance
-11. Logistic Regression coefficient analysis
-12. Precision vs Recall discussion
-13. Scalability discussion
+11. Precision vs Recall discussion
+12. Scalability discussion
 
 ## Results from the supplied dataset
 | Model | Precision | Recall | F1 | ROC-AUC |
@@ -43,12 +42,12 @@ OIBSIP/
     ├── data/
     │   └── creditcard.csv   # local only; not committed
     ├── notebooks/
-    │   └── Fraud_Detection_Machine_Learning.ipynb
+    │   ├── Fraud_Detection_Machine_Learning.ipynb
+    │   └── Fraud_Detection_SMOTE_Logistic_RF.ipynb
     └── results/
         ├── class_distribution.svg
         ├── confusion_matrices.svg
         ├── feature_importance.svg
-        ├── logistic_coefficients.csv
         ├── model_metrics.csv
         ├── random_forest_feature_importance.csv
         ├── results_summary.json
@@ -58,7 +57,7 @@ OIBSIP/
 ## How to run
 ```bash
 pip install -r requirements.txt
-jupyter notebook notebooks/Fraud_Detection_Machine_Learning.ipynb
+jupyter notebook notebooks/Fraud_Detection_SMOTE_Logistic_RF.ipynb
 ```
 
 Then place `creditcard.csv` inside `data/` and run the notebook from top to bottom.
