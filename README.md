@@ -29,28 +29,63 @@ Machine-learning fraud detection on a heavily imbalanced financial transaction d
 
 ## 🛠️ Tools & Technologies
 
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- Scikit-learn
-- imbalanced-learn
-- Jupyter Notebook
-- Git & GitHub
-- Git LFS
+### Level 1 — Task 1: Retail Sales EDA
+- **Python** — Programming and analysis
+- **Pandas** — Data manipulation
+- **NumPy** — Numerical analysis
+- **Matplotlib** — Data visualisation
+- **Seaborn** — Statistical visualisation
+- **Jupyter Notebook** — Interactive analysis
+
+### Level 1 — Task 2: Customer Segmentation
+- **Python** — Programming and analysis
+- **Pandas** — Data manipulation
+- **NumPy** — Numerical computing
+- **Matplotlib** — Data visualisation
+- **Seaborn** — Statistical visualisation
+- **Scikit-learn** — Standardisation, K-Means clustering and evaluation
+- **Jupyter Notebook** — Interactive analysis
+- **UCI ML Repository / ucimlrepo** — Dataset acquisition
+
+### Level 2 — Task 1: Fraud Detection
+- **Python** — Programming and analysis
+- **Pandas** — Data manipulation
+- **NumPy** — Numerical computing
+- **Matplotlib** — Data visualisation
+- **Seaborn** — Statistical visualisation
+- **Scikit-learn** — Machine learning and evaluation
+- **imbalanced-learn** — SMOTE oversampling
+- **Jupyter Notebook** — Interactive analysis
+- **Git & GitHub** — Version control and project hosting
+- **Git LFS** — Large dataset version control
 
 ## 📁 Repository Structure
 
 ```text
 OIBSIP/
 ├── README.md
+│
 ├── DataAnalytics-L1-EDARetailSales/
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── .gitignore
+│   ├── EDA_Retail_Sales.ipynb
+│   ├── data/
+│   │   └── cleaned/
+│   │       └── online_retail_cleaned.csv
+│   └── outputs/
+│       ├── before_after_cleaning.csv
+│       ├── findings.md
+│       └── *.png
+│
 ├── DataAnalytics-L1-CustomerSegmentation/
 │   ├── README.md
 │   ├── requirements.txt
 │   ├── data/
+│   │   └── README.md
 │   └── notebooks/
+│       └── Online_Retail_Customer_Segmentation.ipynb
+│
 └── DataAnalytics-L2-FraudDetection/
     ├── README.md
     ├── requirements.txt
