@@ -20,33 +20,26 @@ The dataset is therefore highly imbalanced, making accuracy alone an unsuitable 
 Two models were evaluated using a stratified train/test split and SMOTE applied within the training pipeline:
 
 1. Logistic Regression — baseline model
-2. HistGradientBoosting — tree-based model
-
-> Note: the original notebook skeleton specified Random Forest as the second model. The successful completed run used HistGradientBoosting because the full Random Forest + SMOTE configuration was too computationally heavy in the execution environment. The results below reflect the model that was actually run.
+2. Random Forest — tree-based model
 
 ## Performance
 
 | Model | Precision | Recall | F1 | ROC-AUC |
 |---|---:|---:|---:|---:|
-| Logistic Regression + SMOTE | 44.77% | **81.05%** | 57.68% | 96.24% |
-| HistGradientBoosting + SMOTE | **79.79%** | 78.95% | **79.37%** | **96.66%** |
+| Logistic Regression + SMOTE | 35.22% | **88.78%** | 50.43% | 96.74% |
+| Random Forest + SMOTE | **80.00%** | 85.71% | **82.76%** | **97.78%** |
 
 ## Preferred Model
 
-**HistGradientBoosting** provided the strongest overall balance between identifying fraudulent transactions and limiting false positives.
+**Random Forest** provided the strongest overall balance between identifying fraudulent transactions and limiting false positives.
 
-Its test-set confusion matrix was:
+Random Forest achieved **80.00% precision**, **85.71% recall**, **82.76% F1-score**, and **97.78% ROC-AUC** on the test set.
 
-- True negatives: **56,632**
-- False positives: **19**
-- True positives: **75**
-- False negatives: **20**
-
-Logistic Regression achieved slightly higher recall (**81.05%**) but produced substantially more false positives, resulting in lower precision (**44.77%**).
+Logistic Regression achieved slightly higher recall (**88.78%**) but produced substantially lower precision (**35.22%**), meaning it generated more false-positive alerts.
 
 ## Conclusion
 
-The analysis demonstrates that fraud detection requires evaluation beyond accuracy because fraudulent transactions represent only a very small fraction of all transactions. SMOTE was used to address the severe class imbalance during model training. HistGradientBoosting achieved the best overall F1 and ROC-AUC in the completed run, while Logistic Regression provided a useful baseline with slightly higher recall.
+The analysis demonstrates that fraud detection requires evaluation beyond accuracy because fraudulent transactions represent only a very small fraction of all transactions. SMOTE was used to address the severe class imbalance during model training. Random Forest achieved the best overall F1-score and ROC-AUC, while Logistic Regression provided a useful baseline with slightly higher recall.
 
 For a production fraud system, the decision threshold should be tuned according to the relative cost of missed fraud versus false alarms. A scalable implementation should also use efficient feature generation, batch or streaming inference, monitoring, periodic retraining, and human review for high-risk cases.
 
