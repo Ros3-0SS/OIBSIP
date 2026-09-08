@@ -1,6 +1,6 @@
 # 💳 Fraud Detection — Machine Learning
 
-### OASIS INFOBYTE SIP — Data Analytics Level 2 • Task 1
+### OASIS INFOBYTE SIP — Data Analytics Level 2 • Task 3
 
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
