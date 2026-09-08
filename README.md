@@ -93,7 +93,6 @@ OIBSIP/
     │   ├── README.md
     │   └── creditcard.csv
     ├── notebooks/
-    │   ├── Fraud_Detection_Machine_Learning.ipynb
     │   └── Fraud_Detection_SMOTE_Logistic_RF.ipynb
     └── results/
         ├── Fraud_Detection_Results.md
