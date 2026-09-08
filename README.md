@@ -114,5 +114,4 @@ The goal of these projects is to strengthen practical data analytics and machine
 
 ## 👩🏽‍💻 Author
 
-**Ntsako Sibanda**  
-Aspiring Quantitative Analyst
+**Ntsako Sibanda**
