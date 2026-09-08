@@ -2,38 +2,34 @@
 
 ### OASIS INFOBYTE SIP — Data Analytics Level 2 • Task 3
 
-[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
-[![Scikit--learn](https://img.shields.io/badge/Scikit--learn-Machine%20Learning-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
-[![imbalanced--learn](https://img.shields.io/badge/imbalanced--learn-SMOTE-red)](https://imbalanced-learn.org/)
-[![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter&logoColor=white)](https://jupyter.org/)
-
-> **An end-to-end machine-learning project focused on detecting fraudulent financial transactions in a severely imbalanced dataset, comparing classification models and evaluating their ability to identify fraud.**
+> **An end-to-end fraud-detection project that combines exploratory data analysis, class-imbalance handling, supervised machine learning, model evaluation, feature analysis and production scalability considerations.**
 
 ---
 
 ## 📌 Project Overview
 
-Financial fraud detection is a challenging classification problem because fraudulent transactions are extremely rare compared with legitimate transactions.
+Financial fraud detection is a severely imbalanced classification problem because fraudulent transactions are rare compared with legitimate transactions.
 
-In this project, I build and evaluate a fraud-detection workflow using the **Credit Card Fraud Detection dataset**. The analysis combines exploratory data analysis, stratified sampling, feature scaling, **SMOTE oversampling**, Logistic Regression and Random Forest classification.
+This project uses the **Credit Card Fraud Detection dataset** to investigate fraud patterns and build two classification models: **Logistic Regression** and **Random Forest**. The workflow includes transaction-amount analysis, relative time-of-day analysis, stratified sampling, feature scaling, **SMOTE**, model comparison, fraud-focused evaluation metrics, feature importance and scalability planning.
 
-The project places particular emphasis on **Precision, Recall, F1-score and ROC-AUC** rather than relying only on accuracy, since accuracy can be misleading when the target classes are highly imbalanced.
+The analysis deliberately avoids relying on accuracy alone because accuracy can be misleading when the positive class is extremely rare.
 
 ---
 
 ## 🎯 Objectives
 
-- 🔍 Understand the structure and class distribution of the transaction data
-- 📊 Investigate the severe imbalance between legitimate and fraudulent transactions
-- ✂️ Create a stratified train-test split
-- ⚙️ Standardise numerical features where appropriate
-- ⚖️ Apply **SMOTE** to the training data to address class imbalance
-- 🤖 Train and compare Logistic Regression and Random Forest models
-- 📈 Evaluate models using fraud-focused performance metrics
-- 🧮 Analyse confusion matrices and ROC curves
-- 🔎 Identify influential features using Random Forest feature importance
-- 💡 Discuss the precision–recall trade-off and practical fraud-detection considerations
+- 🔍 Load and understand the transaction dataset
+- 📊 Measure the percentage of fraudulent transactions and analyse class imbalance
+- 💰 Compare transaction-amount distributions for fraud and legitimate transactions
+- 🕐 Analyse fraud activity across the relative 24-hour cycle represented by the `Time` feature
+- ⚠️ Explain why standard accuracy is misleading for this problem
+- ✂️ Use a stratified train-test split so fraud appears in both sets
+- ⚖️ Apply **SMOTE** to the training data only
+- 🤖 Train and compare Logistic Regression and Random Forest
+- 📈 Evaluate Precision, Recall, F1-score and ROC-AUC
+- 🎯 Explain the Recall-versus-Precision trade-off and metric priority
+- 🔎 Analyse Random Forest feature importance
+- 🚀 Discuss how the solution could scale to **1 million transactions per hour**
 
 ---
 
@@ -41,13 +37,11 @@ The project places particular emphasis on **Precision, Recall, F1-score and ROC-
 
 The project uses the widely used **Credit Card Fraud Detection** dataset.
 
-The dataset contains **284,807 financial transactions**, of which only **492 are fraudulent**, meaning fraudulent transactions represent approximately **0.1727%** of all transactions.
+- **284,807** total transactions
+- **492** fraudulent transactions
+- Fraud rate: approximately **0.1727%**
 
-This extreme imbalance makes fraud detection a useful real-world example of why model evaluation must consider minority-class performance.
-
-### Dataset limitation
-
-The raw `creditcard.csv` file is approximately **151 MB**, so it is not stored directly in the repository's normal Git history. The dataset should be placed locally at:
+The raw `creditcard.csv` file is approximately **151 MB**, so it is not stored in the normal Git history. Place it locally at:
 
 ```text
 data/creditcard.csv
@@ -59,32 +53,42 @@ Git LFS is used in the project setup for large-file version control.
 
 ## 🔬 Methodology
 
-### 1️⃣ Exploratory Data Analysis
+### 1️⃣ Class imbalance analysis
 
-The dataset is inspected to understand its structure, variables and class distribution, with particular attention to the extremely small proportion of fraudulent transactions.
+The notebook calculates the fraud percentage directly from the `Class` target and visualises the legitimate-versus-fraud class distribution.
 
-### 2️⃣ Stratified train-test split
+### 2️⃣ Exploratory Data Analysis
 
-The data is divided into training and testing sets using a **stratified 80/20 split**, preserving the class proportions in both subsets.
+**Transaction amounts:** the notebook compares the distribution of transaction amounts between fraudulent and legitimate transactions. Because transaction amounts are skewed, a `log(1 + Amount)` transformation is used for the distribution visualisation.
 
-### 3️⃣ Feature scaling
+**Time of day:** the dataset's `Time` field represents elapsed seconds from the first transaction rather than a real-world timestamp. It is converted into a relative 24-hour cycle to examine changes in fraud rate by hour.
 
-Numerical features are standardised where required to support the machine-learning workflow.
+### 3️⃣ Why accuracy is not enough
 
-### 4️⃣ SMOTE oversampling
+With fraud representing only about 0.17% of transactions, a classifier predicting every transaction as legitimate would still achieve very high accuracy while detecting no fraud. The project therefore focuses on minority-class metrics.
 
-**Synthetic Minority Over-sampling Technique (SMOTE)** is applied **only to the training data**. This is important because applying oversampling before the train-test split could cause information leakage and produce misleading evaluation results.
+### 4️⃣ Stratified train-test split
 
-### 5️⃣ Model training
+An **80/20 stratified split** preserves the class distribution and ensures fraud cases are present in both training and testing sets.
 
-Two classification approaches are evaluated:
+### 5️⃣ Feature scaling
 
-- **Logistic Regression** — a linear baseline classification model
-- **Random Forest** — an ensemble tree-based classification model capable of capturing nonlinear relationships
+`StandardScaler` is fitted on the training data and then applied to the test data, preventing information from the test set from influencing preprocessing.
 
-### 6️⃣ Model evaluation
+### 6️⃣ SMOTE
 
-The models are compared using:
+**Synthetic Minority Over-sampling Technique (SMOTE)** is applied **only to the training data**. This avoids leakage from synthetic samples into the test set.
+
+### 7️⃣ Model training
+
+Two classification models are evaluated:
+
+- **Logistic Regression** — linear baseline model
+- **Random Forest** — nonlinear ensemble tree model
+
+### 8️⃣ Model evaluation
+
+The models are evaluated using:
 
 - 🎯 Precision
 - 🚨 Recall
@@ -106,34 +110,60 @@ Results from the supplied dataset and evaluated stratified hold-out split:
 
 ### 🏆 Best overall model: Random Forest
 
-The **Random Forest** model achieved the strongest overall balance between identifying fraudulent transactions and limiting false fraud alerts, with:
+Random Forest produced the strongest overall balance in this experiment, while Logistic Regression achieved the higher recall.
 
-- **80.00% Precision**
-- **85.71% Recall**
-- **82.76% F1-score**
-- **97.78% ROC-AUC**
+This highlights the central fraud-detection trade-off: **higher Recall reduces missed fraud, while higher Precision reduces false alarms**.
 
-Logistic Regression achieved slightly higher recall (**88.78%**), meaning it identified a larger proportion of the fraudulent transactions in this particular split. However, its lower precision resulted in substantially more false positives.
+---
 
-This demonstrates an important **precision–recall trade-off** in fraud detection: missing fraud and incorrectly flagging legitimate transactions both have costs.
+## 🎯 Which Metric Matters Most?
+
+**Recall is usually the most important starting metric when the cost of missing fraud is high**, because it measures how much of the actual fraud the system catches.
+
+However, maximising recall alone can create too many false positives. Therefore, **Precision and F1-score should be used as operational guardrails**, with the final classification threshold selected according to the relative business cost of missed fraud versus false alerts.
+
+In this experiment:
+
+- Logistic Regression: **88.78% Recall**, 35.22% Precision
+- Random Forest: **85.71% Recall**, **80.00% Precision**
 
 ---
 
 ## 🔎 Feature Importance
 
-The leading Random Forest features were:
+The leading Random Forest predictors were:
 
 **V14, V17, V12, V10, V3, V16, V4, V9, V2 and V7**.
 
-The transaction variables beginning with `V` are anonymised **PCA-derived features**. Therefore, their importance should be interpreted as predictive signals rather than direct business attributes such as merchant type, customer age or transaction location.
+The `V` variables are anonymised **PCA-derived features**, so their importance represents predictive signal rather than directly interpretable business variables such as merchant category or customer demographics.
+
+---
+
+## 🚀 Scalability: 1 Million Transactions per Hour
+
+**1,000,000 transactions/hour ≈ 277.8 transactions/second.**
+
+A production implementation should use a horizontally scalable, stateless scoring architecture. Suitable considerations include:
+
+- Streaming or micro-batched transaction ingestion
+- Efficient/vectorised feature generation
+- Parallel model-serving workers behind a load balancer
+- Autoscaling and capacity headroom for traffic spikes
+- Monitoring of throughput, p95/p99 latency, data quality, fraud rate and model drift
+- Threshold management and human investigation workflows
+- Periodic retraining and validation
+
+If one scoring worker reliably processes `N` transactions per second, the theoretical minimum worker count is `ceil(277.8 / N)` before adding operational headroom. Exact infrastructure requirements must be established through production-like load testing.
 
 ---
 
 ## 📈 Visualisations & Results
 
-The project includes supporting outputs for model interpretation and evaluation:
+The project includes outputs for:
 
 - 📊 Class distribution
+- 💰 Transaction amount distribution
+- 🕐 Fraud rate by relative hour
 - 🔲 Confusion matrices
 - 📈 ROC curve
 - 🌲 Random Forest feature importance
@@ -147,43 +177,28 @@ These outputs are stored in the project's `results/` directory.
 ## 💡 Key Insights
 
 1. **Fraud is extremely rare** — only 492 of 284,807 transactions are fraudulent.
-2. **Accuracy alone is not sufficient** for evaluating this problem because a model can appear highly accurate while performing poorly on fraud cases.
-3. **SMOTE improves the learning environment for the minority class** by generating synthetic training examples rather than simply duplicating existing fraud observations.
-4. **Random Forest produced the strongest overall performance** in this experiment.
-5. **Logistic Regression produced higher recall**, demonstrating that model selection depends on the relative cost of missed fraud versus false alerts.
-6. The most influential Random Forest predictors are anonymised PCA-derived variables, limiting direct business interpretation.
-
----
-
-## 🚀 Practical Considerations
-
-A production fraud-detection system would require additional work beyond this internship project, including:
-
-- Threshold optimisation based on business costs
-- Cross-validation
-- Cost-sensitive learning
-- Precision–recall curve analysis
-- Model monitoring and drift detection
-- Investigation workflows for flagged transactions
-- Regular model retraining
-- Domain and regulatory validation
-
-The reported metrics therefore represent the performance of this particular experimental workflow rather than a production-ready fraud-detection system.
+2. **Accuracy alone is insufficient** for this use case because the majority class dominates the dataset.
+3. **Transaction amount and relative time-of-day provide useful EDA perspectives** before modelling.
+4. **SMOTE improves minority-class representation during training** without contaminating the hold-out test set.
+5. **Random Forest produced the strongest overall balance** in the evaluated experiment.
+6. **Logistic Regression produced higher recall**, showing that model choice depends on the cost of missed fraud versus false alerts.
+7. **Recall is generally prioritised when missed fraud is more costly**, but precision and F1 remain important for controlling investigation workload.
+8. The strongest Random Forest predictors are anonymised PCA-derived features, limiting direct business interpretation.
 
 ---
 
 ## 🛠️ Tools & Technologies
 
-- **Python** — Programming and analysis
-- **Pandas** — Data manipulation
-- **NumPy** — Numerical computing
-- **Matplotlib** — Data visualisation
-- **Seaborn** — Statistical visualisation
-- **Scikit-learn** — Machine learning, preprocessing and evaluation
-- **imbalanced-learn** — SMOTE oversampling
-- **Jupyter Notebook** — Interactive analysis
-- **Git & GitHub** — Version control and project hosting
-- **Git LFS** — Large dataset version control
+- **Python**
+- **Pandas**
+- **NumPy**
+- **Matplotlib**
+- **Seaborn**
+- **Scikit-learn**
+- **imbalanced-learn / SMOTE**
+- **Jupyter Notebook**
+- **Git & GitHub**
+- **Git LFS**
 
 ---
 
@@ -205,6 +220,8 @@ DataAnalytics-L2-FraudDetection/
 └── 📂 results/
     ├── 📄 Fraud_Detection_Results.md
     ├── 📊 class_distribution.svg
+    ├── 💰 amount_distribution.png
+    ├── 🕐 fraud_rate_by_hour.png
     ├── 🔲 confusion_matrices.svg
     ├── 🌲 feature_importance.svg
     ├── 📋 model_metrics.csv
@@ -223,13 +240,13 @@ DataAnalytics-L2-FraudDetection/
 git clone https://github.com/Ros3-0SS/OIBSIP.git
 ```
 
-### 2. Open the fraud-detection project
+### 2. Open the project
 
 ```bash
 cd OIBSIP/DataAnalytics-L2-FraudDetection
 ```
 
-### 3. Install the required packages
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -237,7 +254,7 @@ pip install -r requirements.txt
 
 ### 4. Add the dataset
 
-Place the dataset here:
+Place the dataset at:
 
 ```text
 data/creditcard.csv
@@ -245,39 +262,44 @@ data/creditcard.csv
 
 ### 5. Open the notebook
 
-For the final SMOTE/model-comparison workflow, open:
-
 ```text
 notebooks/Fraud_Detection_SMOTE_Logistic_RF.ipynb
 ```
 
-### 6. Run the notebook
+### 6. Run all cells from top to bottom
 
-Run the notebook cells from top to bottom to reproduce the analysis, model training, evaluation metrics and visualisations.
+The notebook reproduces the EDA, class-imbalance analysis, SMOTE workflow, model training, evaluation, feature importance and scalability discussion.
+
+---
+
+## 📋 OASIS INFOBYTE Task Alignment
+
+This project now covers the complete requested Level 2, Task 3 workflow:
+
+- ✅ Dataset loading and fraud-percentage analysis
+- ✅ Transaction-amount distribution: fraud vs legitimate
+- ✅ Time-of-day analysis
+- ✅ Explanation of misleading accuracy
+- ✅ Class-imbalance handling with SMOTE
+- ✅ Stratified train/test split
+- ✅ Logistic Regression + Random Forest
+- ✅ Precision, Recall, F1 and ROC-AUC
+- ✅ Recall vs Precision trade-off and metric priority
+- ✅ Random Forest feature importance
+- ✅ Scalability discussion for 1 million transactions/hour
 
 ---
 
 ## 📈 Portfolio Skills Demonstrated
 
-This project demonstrates an end-to-end machine-learning workflow:
-
-**Data inspection → Class imbalance analysis → Stratified splitting → Feature scaling → SMOTE → Model training → Model comparison → Performance evaluation → Feature importance → Interpretation → Practical recommendations**
-
----
-
-## 📋 Task Alignment
-
-This project addresses the **OASIS INFOBYTE Data Analytics Level 2 fraud-detection task** by applying machine-learning techniques to a financial transaction dataset and evaluating models using appropriate classification metrics for an imbalanced problem.
-
-The project also documents methodological limitations and explains why fraud-focused metrics such as **Precision, Recall and F1-score** are more informative than accuracy alone for this use case.
+**Data loading → EDA → Class imbalance analysis → Stratified splitting → Feature scaling → SMOTE → Model training → Model comparison → Fraud-focused evaluation → Feature importance → Business interpretation → Scalability planning**
 
 ---
 
 ## 👩🏽‍💻 Author
 
-**Ntsako Sibanda**  
-Data Analytics Portfolio • OASIS INFOBYTE SIP
+**Ntsako Sibanda**
 
 ---
 
-⭐ *Explore the repository to see the complete notebook, model outputs and supporting analysis.*
+⭐ *Explore the repository to see the complete fraud-detection notebook, results and supporting analysis.*
