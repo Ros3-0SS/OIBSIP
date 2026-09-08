@@ -20,7 +20,7 @@ Customer segmentation using the UCI Online Retail dataset, RFM analysis and K-Me
 
 ### Level 2
 
-#### Task 1 — Fraud Detection with Machine Learning
+#### Task 1 — Fraud Detection
 `DataAnalytics-L2-FraudDetection/`
 
 Machine-learning fraud detection on a heavily imbalanced financial transaction dataset. The project uses exploratory data analysis, stratified train-test splitting, feature scaling, SMOTE oversampling, Logistic Regression and Random Forest models. Models are evaluated using Precision, Recall, F1-score and ROC-AUC, with confusion matrices, ROC curves and Random Forest feature importance included.
