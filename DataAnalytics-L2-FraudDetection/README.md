@@ -200,7 +200,6 @@ DataAnalytics-L2-FraudDetection/
 │   └── 💾 creditcard.csv              # local / Git LFS
 │
 ├── 📂 notebooks/
-│   ├── 📓 Fraud_Detection_Machine_Learning.ipynb
 │   └── 📓 Fraud_Detection_SMOTE_Logistic_RF.ipynb
 │
 └── 📂 results/
