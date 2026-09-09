@@ -1,11 +1,13 @@
 # Fraud Detection Dataset
 
-Place the benchmark Credit Card Fraud Detection CSV in this directory with the exact filename:
+This project uses the benchmark Credit Card Fraud Detection dataset.
+
+The repository tracks `creditcard.csv` with **Git LFS** because the dataset is large. The working file must have the exact filename:
 
 ```text
 creditcard.csv
 ```
 
-The notebook expects the Kaggle/UCI-style columns including `Time`, `Amount`, and target column `Class` where `1` represents fraud and `0` represents a legitimate transaction.
+The notebook expects the standard columns including `Time`, `Amount`, and target column `Class`, where `1` represents fraud and `0` represents a legitimate transaction.
 
-The raw dataset is intentionally excluded from GitHub because of its large size and because the repository should contain the reproducible analysis code rather than redistribute a large third-party dataset.
+The committed GitHub file is an LFS pointer; cloning the repository with Git LFS enabled retrieves the actual dataset. This keeps the large dataset out of normal Git object history while preserving a reproducible project structure.
