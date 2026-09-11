@@ -17,7 +17,7 @@ This project performs an **Exploratory Data Analysis (EDA)** of the Online Retai
 
 The analysis focuses on understanding sales performance over time, identifying high-performing products and markets, examining relationships between numerical variables, and translating the findings into practical business recommendations.
 
-The project also documents important data limitations rather than making unsupported assumptions. For example, the dataset does not contain customer age or gender, so demographic conclusions are not fabricated.
+The project also documents important data limitations rather than making unsupported assumptions. For example, the dataset does not contain customer age, gender or a dedicated product-category field, so those analyses are not fabricated.
 
 ---
 
@@ -25,8 +25,9 @@ The project also documents important data limitations rather than making unsuppo
 
 - 🔍 Inspect and understand the structure and quality of the dataset
 - 🧹 Clean and prepare transaction-level data for analysis
+- 📊 Calculate mean, median, mode and standard deviation for key numerical variables
 - 📈 Analyse monthly and quarterly revenue trends
-- 🛍️ Identify high-volume products
+- 🛍️ Identify high-volume and high-revenue products
 - 🌍 Analyse revenue and order concentration across countries
 - 📊 Examine relationships between quantity, unit price and revenue
 - 💡 Identify useful business insights
@@ -77,13 +78,17 @@ Revenue = Quantity × UnitPrice
 
 ## 🔬 Analysis Performed
 
+### 📐 Descriptive Statistics
+
+For `Quantity`, `UnitPrice` and calculated `Revenue`, the notebook reports **mean, median, mode and standard deviation**.
+
 ### 📈 Sales Trends
 
 Monthly and quarterly revenue trends were analysed to identify periods of stronger and weaker sales performance.
 
 ### 🛍️ Product Analysis
 
-Products were ranked by units sold to identify the highest-volume products.
+Products were ranked by **units sold** and **revenue** to distinguish high-volume products from products contributing the greatest sales value.
 
 ### 🌍 Market Analysis
 
@@ -97,6 +102,10 @@ A correlation heatmap was used to examine relationships between key numerical va
 
 Where `CustomerID` is available, customer-level information is explored. However, the dataset does **not** contain age or gender fields, so those analyses are intentionally excluded.
 
+### 🗂️ Product Category Limitation
+
+The supplied dataset does **not** contain a dedicated product-category field. Therefore, revenue by product category cannot be calculated reliably without inventing categories. Product-level revenue and unit-volume analysis is provided instead.
+
 ---
 
 ## 📊 Visualisations
@@ -106,12 +115,13 @@ The project includes:
 - Monthly revenue trend
 - Quarterly revenue trend
 - Top 10 products by units sold
+- Top 10 products by revenue
 - Top 10 countries by revenue
 - Top 10 countries by number of orders
 - Correlation heatmap
-- Additional revenue/customer analysis
+- Additional market/activity visualisation
 
-The visualisations are generated from the notebook and stored in the project's `outputs/` directory.
+The visualisations are generated from the notebook and stored in the project's `outputs/` directory, with written observations provided alongside the charts.
 
 ---
 
@@ -210,9 +220,19 @@ This project demonstrates an end-to-end exploratory data analysis workflow:
 
 ## 📋 Task Alignment
 
-The project addresses the applicable requirements of the **OASIS INFOBYTE Data Analytics Level 1 retail-sales task**, including data inspection, descriptive statistics, monthly/quarterly trends, product/category analysis, correlation analysis, additional visualisation, observations and actionable recommendations.
+The project addresses the applicable requirements of the **OASIS INFOBYTE Data Analytics Level 1 retail-sales task**, including:
 
-Where the original task refers to demographic analysis, the project explicitly documents that **age and gender are not present in the supplied dataset** rather than fabricating demographic findings.
+- data inspection and quality checks
+- mean, median, mode and standard deviation
+- monthly and quarterly trends
+- top-product analysis by volume and revenue
+- market analysis by country
+- correlation analysis
+- additional visualisation
+- written observations accompanying the visualisations
+- actionable business recommendations
+
+Where the original task refers to **age/gender** and **product-category** analysis, the project explicitly documents that those fields are not present in the supplied dataset rather than fabricating findings.
 
 ---
 
