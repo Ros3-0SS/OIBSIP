@@ -2,21 +2,23 @@
 
 ## Oasis Infobyte Internship — Data Analytics
 
-This repository contains my **Oasis Infobyte Internship** projects for the Data Analytics track. The projects cover exploratory data analysis, customer segmentation, and machine-learning-based fraud detection.
+This repository contains my **Oasis Infobyte Internship** projects for the Data Analytics track. The projects demonstrate practical skills in data cleaning, exploratory data analysis, visualisation, customer segmentation, machine learning, model evaluation and business recommendations.
 
 ## 📊 Data Analytics Projects
 
 ### Level 1
 
-#### Task 1 — EDA on Retail Sales Data
+#### Task 1 — EDA on Online Retail Sales
 `DataAnalytics-L1-EDARetailSales/`
 
-Exploratory Data Analysis of retail sales data, including data cleaning, descriptive statistics, sales trends, visualisations, findings, and business recommendations.
+Exploratory Data Analysis of online retail transactions, including data cleaning, descriptive statistics, revenue trends, Average Order Value (AOV), product analysis, country analysis, correlation analysis, visualisations, findings and business recommendations.
+
+The notebook is executed automatically through **GitHub Actions** and the generated notebook, cleaned dataset and visualisations are saved back to the repository.
 
 #### Task 2 — Online Retail Customer Segmentation
 `DataAnalytics-L1-CustomerSegmentation/`
 
-Customer segmentation using the UCI Online Retail dataset, RFM analysis and K-Means clustering. The project includes data preparation, exploratory analysis, feature engineering, standardisation, the Elbow Method, silhouette scoring, cluster profiling, visualisation, and marketing recommendations.
+Customer segmentation using the UCI Online Retail dataset, RFM analysis and K-Means clustering. The project includes data preparation, exploratory analysis, feature engineering, standardisation, the Elbow Method, silhouette scoring, cluster profiling, visualisation and marketing recommendations.
 
 ### Level 2
 
@@ -29,72 +31,82 @@ Machine-learning fraud detection on a heavily imbalanced financial transaction d
 
 ## 🛠️ Tools & Technologies
 
-### Level 1 — Task 1: Retail Sales EDA
-- **Python** — Programming and analysis
-- **Pandas** — Data manipulation
-- **NumPy** — Numerical analysis
+### Core Data Analytics Stack
+- **Python** — Programming, data analysis and automation
+- **Pandas** — Data manipulation, cleaning and aggregation
+- **NumPy** — Numerical computing and statistical calculations
 - **Matplotlib** — Data visualisation
-- **Seaborn** — Statistical visualisation
-- **Jupyter Notebook** — Interactive analysis
+- **Seaborn** — Statistical visualisation and correlation heatmaps
+- **Jupyter Notebook** — Interactive analysis and reproducible notebooks
 
-### Level 1 — Task 2: Customer Segmentation
-- **Python** — Programming and analysis
-- **Pandas** — Data manipulation
-- **NumPy** — Numerical computing
-- **Matplotlib** — Data visualisation
-- **Seaborn** — Statistical visualisation
-- **Scikit-learn** — Standardisation, K-Means clustering and evaluation
-- **Jupyter Notebook** — Interactive analysis
-- **UCI ML Repository / ucimlrepo** — Dataset acquisition
+### Machine Learning
+- **Scikit-learn** — Feature scaling, K-Means clustering, Logistic Regression, Random Forest and model evaluation
+- **imbalanced-learn** — SMOTE oversampling for imbalanced classification data
 
-### Level 2 — Task 3: Fraud Detection
-- **Python** — Programming and analysis
-- **Pandas** — Data manipulation
-- **NumPy** — Numerical computing
-- **Matplotlib** — Data visualisation
-- **Seaborn** — Statistical visualisation
-- **Scikit-learn** — Machine learning and evaluation
-- **imbalanced-learn** — SMOTE oversampling
-- **Jupyter Notebook** — Interactive analysis
-- **Git & GitHub** — Version control and project hosting
-- **Git LFS** — Large dataset version control
+### Data & Version Control
+- **UCI ML Repository / ucimlrepo** — Dataset acquisition for customer segmentation
+- **Git** — Version control
+- **GitHub** — Repository hosting and project collaboration
+- **Git LFS** — Version control for large CSV datasets
+
+### Automation & Reproducibility
+- **GitHub Actions** — Automatically executes and validates the Task 1 EDA notebook
+- **nbconvert** — Executes the Jupyter notebook non-interactively in the GitHub Actions workflow
+- **requirements.txt** — Records Python dependencies for reproducible environments
 
 ## 📁 Repository Structure
 
 ```text
 OIBSIP/
-├── README.md
 │
-├── DataAnalytics-L1-EDARetailSales/
-│   ├── README.md
-│   ├── requirements.txt
-│   ├── .gitignore
-│   ├── EDA_Retail_Sales.ipynb
-│   ├── data/
-│   │   └── cleaned/
-│   │       └── online_retail_cleaned.csv
-│   └── outputs/
+├── 📄 README.md
+│
+├── 📂 .github/
+│   └── 📂 workflows/
+│       └── run-eda-retail-sales.yml   ← Automated Task 1 notebook execution
+│
+├── 📂 DataAnalytics-L1-EDARetailSales/
+│   ├── 📄 README.md
+│   ├── 📄 requirements.txt
+│   ├── 📄 .gitignore
+│   ├── 📓 EDA_Retail_Sales.ipynb      ← Executed EDA notebook
+│   │
+│   ├── 📂 data/
+│   │   ├── 📂 raw/
+│   │   │   └── online_retail.csv      ← Raw input dataset
+│   │   └── 📂 cleaned/
+│   │       └── online_retail_cleaned.csv ← Cleaned dataset generated by notebook
+│   │
+│   └── 📂 outputs/
+│       ├── monthly_revenue_trend.png
+│       ├── quarterly_revenue_trend.png
+│       ├── monthly_aov.png
+│       ├── monthly_aov.svg
+│       ├── top_10_countries_by_revenue.png
+│       ├── top_10_countries_by_orders.png
+│       ├── top_10_products_by_units.png
+│       ├── top_10_products_by_revenue.png
+│       ├── correlation_heatmap.png
 │       ├── before_after_cleaning.csv
-│       ├── findings.md
-│       └── *.png
+│       └── findings.md
 │
-├── DataAnalytics-L1-CustomerSegmentation/
-│   ├── README.md
-│   ├── requirements.txt
-│   ├── data/
+├── 📂 DataAnalytics-L1-CustomerSegmentation/
+│   ├── 📄 README.md
+│   ├── 📄 requirements.txt
+│   ├── 📂 data/
 │   │   └── README.md
-│   └── notebooks/
+│   └── 📂 notebooks/
 │       └── Online_Retail_Customer_Segmentation.ipynb
 │
-└── DataAnalytics-L2-FraudDetection/
-    ├── README.md
-    ├── requirements.txt
-    ├── data/
+└── 📂 DataAnalytics-L2-FraudDetection/
+    ├── 📄 README.md
+    ├── 📄 requirements.txt
+    ├── 📂 data/
     │   ├── README.md
     │   └── creditcard.csv
-    ├── notebooks/
+    ├── 📂 notebooks/
     │   └── Fraud_Detection_SMOTE_Logistic_RF.ipynb
-    └── results/
+    └── 📂 results/
         ├── Fraud_Detection_Results.md
         ├── class_distribution.svg
         ├── confusion_matrices.svg
@@ -105,12 +117,45 @@ OIBSIP/
         └── roc_curve.svg
 ```
 
-> **Note:** The fraud-detection dataset is tracked with **Git LFS** because the CSV is larger than GitHub's standard file-size limit.
+> **Note:** Large datasets are tracked with **Git LFS** where required. Run `git lfs pull` after cloning the repository to retrieve LFS-tracked files.
+
+## ⚙️ Automated EDA Workflow
+
+The Task 1 project includes a GitHub Actions workflow:
+
+```text
+.github/workflows/run-eda-retail-sales.yml
+```
+
+The workflow automatically:
+
+1. Checks out the repository with Git LFS support.
+2. Sets up Python 3.11.
+3. Installs the required Python packages.
+4. Executes `EDA_Retail_Sales.ipynb` from top to bottom.
+5. Verifies that the cleaned dataset and required visualisations were generated.
+6. Verifies that the notebook contains executed code cells and outputs.
+7. Commits the executed notebook and generated outputs back to the `main` branch.
+
+This provides a reproducible way to validate that the EDA project can run successfully from the repository.
 
 ## 🎯 Internship Goal
 
-The goal of these projects was to strengthen my practical data analytics and machine-learning skills by completing end-to-end projects—from data preparation and exploratory analysis to visualisation, modelling, evaluation, interpretation and business recommendations.
+The goal of these projects is to strengthen practical data analytics and machine-learning skills by completing end-to-end projects — from data preparation and exploratory analysis to visualisation, modelling, evaluation, interpretation and business recommendations.
+
+## 📌 Current Focus — Task 1
+
+The **Online Retail Sales EDA** project demonstrates an end-to-end analytics workflow:
+
+**Raw data → Data inspection → Data cleaning → Feature engineering → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Country analysis → Correlation analysis → Visualisation → Findings → Business recommendations**
+
+The project also documents important dataset limitations instead of making unsupported assumptions. In particular, the supplied retail dataset does not contain reliable **age/gender fields** or a dedicated **product-category field**, so those analyses are not fabricated.
 
 ## 👩🏽‍💻 Author
 
-**Ntsako Sibanda**
+**Ntsako Sibanda**  
+Data Analytics Portfolio • OASIS INFOBYTE SIP
+
+---
+
+⭐ *Explore the repository to see the complete notebooks, supporting data, visualisations and project documentation.*
