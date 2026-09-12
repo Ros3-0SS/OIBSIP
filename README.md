@@ -94,9 +94,23 @@ OIBSIP/
 │   ├── 📄 README.md
 │   ├── 📄 requirements.txt
 │   ├── 📂 data/
-│   │   └── README.md
-│   └── 📂 notebooks/
-│       └── Online_Retail_Customer_Segmentation.ipynb
+│   │   └── 📄 README.md
+│   ├── 📂 notebooks/
+│   │   └── 📓 Online_Retail_Customer_Segmentation.ipynb
+│   └── 📂 outputs/
+│       ├── 01_monthly_revenue_trend.png
+│       ├── 02_top_10_countries_revenue.png
+│       ├── 03_top_10_products_revenue.png
+│       ├── 04_recency_distribution.png
+│       ├── 05_frequency_distribution.png
+│       ├── 06_monetary_distribution.png
+│       ├── 07_silhouette_scores.png
+│       ├── 08_customers_per_segment.png
+│       ├── 09_average_rfm_by_segment.png
+│       ├── 10_frequency_vs_monetary_segments.png
+│       ├── 11_recency_vs_monetary_segments.png
+│       ├── 12_3d_rfm_customer_segments.png
+│       └── customer_segment_summary.csv
 │
 └── 📂 DataAnalytics-L2-FraudDetection/
     ├── 📄 README.md
