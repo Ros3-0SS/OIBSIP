@@ -17,7 +17,7 @@ This project performs an **Exploratory Data Analysis (EDA)** of the Online Retai
 
 The analysis follows a reproducible **raw → clean → analyse → visualise → recommend** workflow. The notebook starts from the raw transaction file, applies the documented cleaning steps, saves the resulting cleaned dataset to `data/cleaned/`, and then performs the analysis.
 
-The project documents important data limitations rather than making unsupported assumptions. The supplied dataset does not contain customer age, gender or a dedicated product-category field, so those analyses are not fabricated.
+The project explicitly documents dataset limitations instead of inventing unavailable information. Two requested analyses are **impossible with the supplied dataset**: **age/gender analysis** because there are no age or gender fields, and **product-category analysis** because there is no dedicated product-category field.
 
 ---
 
@@ -76,11 +76,32 @@ For **product-level rankings**, the notebook additionally excludes shipping, ser
 
 ---
 
+## 📐 Numerical Statistics — Why These Measures Matter
+
+The descriptive-statistics requirement is applied to the three numerical variables with direct business meaning: **Quantity, UnitPrice and Revenue**. The CSV `index` column is a technical row identifier, not a business measure, so it is intentionally excluded.
+
+The project reports all four requested measures because each provides different information:
+
+- **Mean:** the arithmetic average and a useful measure of overall transaction scale, but sensitive to unusually large purchases.
+- **Median:** the middle transaction value and a better indicator of a typical transaction when values are skewed.
+- **Mode:** the most frequently occurring value, useful for identifying the most common quantity, price or revenue value.
+- **Standard deviation:** measures how widely transactions vary around the mean.
+
+| Variable | Mean | Median | Mode | Standard deviation |
+|---|---:|---:|---:|---:|
+| Quantity | 10.54 | 3.00 | 1.00 | 155.52 |
+| UnitPrice | £3.91 | £2.08 | £1.25 | £35.92 |
+| Revenue | £20.12 | £9.90 | £15.00 | £270.36 |
+
+The large mean–median gaps, especially for **Quantity (10.54 vs 3)** and **Revenue (£20.12 vs £9.90)**, indicate that transaction-level values are right-skewed and influenced by larger purchases. The relatively large standard deviations also show substantial transaction variability. Therefore, using the mean alone would not adequately describe the typical transaction; the median and dispersion measure are necessary for a more complete interpretation.
+
+---
+
 ## 🔬 Analysis Performed
 
 ### 📐 Descriptive Statistics
 
-For `Quantity`, `UnitPrice` and calculated `Revenue`, the notebook reports **mean, median, mode and standard deviation**.
+For `Quantity`, `UnitPrice` and calculated `Revenue`, the notebook reports **mean, median, mode and standard deviation**, with a written justification for why each statistic is relevant.
 
 ### 📈 Sales Trends
 
@@ -96,31 +117,41 @@ Country-level revenue and order counts were analysed to understand market concen
 
 ### 🔗 Correlation Analysis
 
-A correlation heatmap examines relationships between `Quantity`, `UnitPrice`, and `Revenue`. The notebook includes an actual written interpretation and notes that `Revenue` is mechanically calculated as `Quantity × UnitPrice`.
+A correlation heatmap examines relationships between `Quantity`, `UnitPrice`, and `Revenue`. The notebook includes a written interpretation and notes that `Revenue` is mechanically calculated as `Quantity × UnitPrice`.
 
 ### 👥 Customer Data
 
 Where `CustomerID` is available, customer-level information is explored. However, the dataset does **not** contain age or gender fields, so those analyses are intentionally excluded.
 
-### 🗂️ Product Category Limitation
+---
 
-The supplied dataset does **not** contain a dedicated product-category field. Therefore, revenue by product category cannot be calculated reliably without inventing categories. Product-level revenue and unit-volume analysis is provided instead. This is a documented dataset limitation, not a missing calculation.
+## ⚠️ Explicit Dataset Limitations — Two Impossible Requirements
+
+### 1. Age and gender analysis — impossible with the supplied dataset
+
+The dataset contains **no age field and no gender field**. There is therefore no reliable variable from which to calculate age groups or gender-based sales patterns. Inferring these attributes from names, descriptions, countries or other fields would introduce unsupported assumptions. **Age/gender analysis is omitted because the required data does not exist.**
+
+### 2. Product-category analysis — impossible with the supplied dataset
+
+The dataset contains **no dedicated product-category field**. Stock codes and descriptions identify individual products but do not provide an authoritative category taxonomy. Creating categories manually would introduce subjective classifications. **Product-category revenue analysis is omitted because the required data does not exist.**
+
+These are documented **dataset limitations**, not missing calculations.
 
 ---
 
-## 📊 Visualisations
+## 📊 Visualisations & Written Observations
 
-The project includes:
+Every chart has a corresponding visible observation in the notebook and `outputs/findings.md`:
 
-- Monthly revenue trend
-- Quarterly revenue trend
-- Top 10 products by units sold
-- Top 10 products by revenue, corrected to exclude non-product lines
-- Top 10 countries by revenue
-- Top 10 countries by number of orders
-- Correlation heatmap
-
-The visualisations are generated from the notebook and stored in the project's `outputs/` directory, with a written interpretation placed underneath every visualization in the notebook.
+| Chart | Observation |
+|---|---|
+| Monthly revenue trend | **2011-11** is the peak month at **£1,509,496.33**, showing a strong late-year sales peak. |
+| Quarterly revenue trend | **2011Q4** is the strongest quarter at **£3,303,268.31**, confirming the late-year increase extends beyond one month. |
+| Top 10 countries by revenue | The **United Kingdom contributes 84.6%** of total revenue, showing strong market concentration. |
+| Top 10 countries by orders | The UK leads with **18,019 unique invoices**, reinforcing its importance. |
+| Top 10 products by units sold | **PAPER CRAFT , LITTLE BIRDIE** leads with **80,995 units**. |
+| Top 10 products by revenue | **REGENCY CAKESTAND 3 TIER** leads at **£174,484.74** after non-product lines are excluded. |
+| Correlation heatmap | **Quantity–Revenue r = 0.91**; the strong relationship is expected because Revenue = Quantity × UnitPrice. |
 
 ---
 
@@ -132,6 +163,7 @@ The visualisations are generated from the notebook and stored in the project's `
 - After excluding non-product lines, **REGENCY CAKESTAND 3 TIER** was the highest-revenue product at approximately **£174,484.74**.
 - The **United Kingdom contributes approximately 84.6% of total revenue**.
 - The **top 10 countries contribute approximately 97.2% of total revenue**.
+- The large mean–median differences show that transaction values are skewed, so median and standard deviation are important alongside the mean.
 - The dataset does not support age/gender analysis or reliable product-category analysis.
 
 These results indicate substantial revenue concentration in the UK market and a meaningful difference between product volume and product revenue rankings.
@@ -243,16 +275,17 @@ This project demonstrates an end-to-end exploratory data analysis workflow:
 The project addresses the applicable requirements of the **OASIS INFOBYTE Data Analytics Level 1 retail-sales task**, including:
 
 - data inspection and quality checks
-- mean, median, mode and standard deviation
+- mean, median, mode and standard deviation with numerical justification
 - monthly and quarterly trends
 - top-product analysis by volume and revenue
 - market analysis by country
 - correlation analysis
 - additional visualisation
-- written observations accompanying the visualisations
+- visible written observations accompanying every visualization
 - actionable business recommendations
+- explicit documentation of unavailable dataset fields
 
-Where the original task refers to **age/gender** and **product-category** analysis, the project explicitly documents that those fields are not present in the supplied dataset rather than fabricating findings. Product-level postage/non-product lines are also excluded from product rankings.
+The two unavailable analyses are intentionally marked as dataset limitations: **age/gender analysis** cannot be performed because those fields do not exist, and **product-category analysis** cannot be performed because no dedicated category field exists. Product-level postage/non-product lines are also excluded from product rankings.
 
 ---
 
