@@ -26,6 +26,15 @@ The results are:
 
 The large gap between mean and median, especially for **Quantity (10.54 vs 3)** and **Revenue (£20.12 vs £9.90)**, indicates that the transaction-level distributions are right-skewed and influenced by larger purchases. Therefore, the median is important alongside the mean; reporting only the mean would hide the typical transaction experience. The relatively large standard deviations reinforce that transaction values vary substantially across orders.
 
+## Average Order Value (AOV)
+Average Order Value is calculated as **total monthly revenue divided by the number of unique invoices in that month**. This provides a customer-spending perspective that complements total revenue and order volume.
+
+- **Overall AOV:** £534.40.
+- **Highest monthly AOV:** **2011-12 — £779.97**.
+- **Lowest monthly AOV:** **2011-04 — £431.63**.
+
+The AOV trend is an additional visualisation that reveals whether changes in revenue are associated with larger or smaller average customer baskets. Tracking AOV alongside order counts can help management distinguish transaction-volume growth from increased spend per order.
+
 ## Dataset limitations — two impossible requirements
 The following two requested analyses are **impossible with the supplied dataset**, rather than merely unfinished:
 
@@ -66,11 +75,12 @@ Every project chart has a corresponding written observation in the notebook and 
 
 1. **Monthly revenue trend:** **2011-11** is the peak month at **£1,509,496.33**, showing a strong late-year sales peak.
 2. **Quarterly revenue trend:** **2011Q4** is the strongest quarter at **£3,303,268.31**, confirming that the late-year increase extends beyond a single month.
-3. **Top 10 countries by revenue:** the **United Kingdom contributes 84.6%** of total revenue, showing strong market concentration.
-4. **Top 10 countries by orders:** the United Kingdom leads with **18,019 unique invoices**, reinforcing the importance of the domestic market.
-5. **Top 10 products by units sold:** **PAPER CRAFT , LITTLE BIRDIE** leads with **80,995 units**, making it the highest-volume product.
-6. **Top 10 products by revenue:** **REGENCY CAKESTAND 3 TIER** leads at **£174,484.74** after non-product lines are excluded, demonstrating that the revenue leader differs from the volume leader.
-7. **Correlation heatmap:** **Quantity and Revenue correlate at 0.91**, while **UnitPrice and Revenue correlate at 0.14**; the strong Quantity–Revenue relationship is expected because Revenue is calculated as Quantity × UnitPrice.
+3. **Monthly AOV:** **2011-12** has the highest average order value at **£779.97**, while **2011-04** has the lowest at **£431.63**; the overall AOV is **£534.40**.
+4. **Top 10 countries by revenue:** the **United Kingdom contributes 84.6%** of total revenue, showing strong market concentration.
+5. **Top 10 countries by orders:** the United Kingdom leads with **18,019 unique invoices**, reinforcing the importance of the domestic market.
+6. **Top 10 products by units sold:** **PAPER CRAFT , LITTLE BIRDIE** leads with **80,995 units**, making it the highest-volume product.
+7. **Top 10 products by revenue:** **REGENCY CAKESTAND 3 TIER** leads at **£174,484.74** after non-product lines are excluded, demonstrating that the revenue leader differs from the volume leader.
+8. **Correlation heatmap:** **Quantity and Revenue correlate at 0.91**, while **UnitPrice and Revenue correlate at 0.14**; the strong Quantity–Revenue relationship is expected because Revenue is calculated as Quantity × UnitPrice.
 
 ## Sales trends
 - Highest-revenue month: **2011-11**, revenue **£1,509,496.33**.
@@ -91,5 +101,6 @@ Every project chart has a corresponding written observation in the notebook and 
 1. Plan inventory, staffing, and campaigns around peak periods.
 2. Protect high-volume products while separately monitoring high-revenue products.
 3. Prioritise the UK market while selectively testing international growth.
-4. Improve CustomerID capture to strengthen retention, frequency, and lifetime-value analysis.
-5. Collect reliable category and demographic fields if those analyses are required in future.
+4. Monitor AOV alongside order volume and test bundles/cross-selling during lower-AOV periods to increase basket size.
+5. Improve CustomerID capture to strengthen retention, frequency, and lifetime-value analysis.
+6. Collect reliable category and demographic fields if those analyses are required in future.
