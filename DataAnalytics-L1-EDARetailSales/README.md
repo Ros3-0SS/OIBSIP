@@ -27,6 +27,7 @@ The project explicitly documents dataset limitations instead of inventing unavai
 - 🧹 Clean and prepare transaction-level data for analysis
 - 📊 Calculate mean, median, mode and standard deviation for key numerical variables
 - 📈 Analyse monthly and quarterly revenue trends
+- 💷 Analyse monthly **Average Order Value (AOV)** to understand changes in average customer basket size
 - 🛍️ Identify high-volume and high-revenue products, with **Quantity Sold** as the definition of best-selling
 - 🌍 Analyse revenue and order concentration across countries
 - 📊 Examine relationships between quantity, unit price and revenue
@@ -97,7 +98,7 @@ The large mean–median gaps, especially for **Quantity (10.54 vs 3)** and **Rev
 
 ---
 
-## 🔬 Analysis Performed
+## 📈 Analysis Performed
 
 ### 📐 Descriptive Statistics
 
@@ -106,6 +107,16 @@ For `Quantity`, `UnitPrice` and calculated `Revenue`, the notebook reports **mea
 ### 📈 Sales Trends
 
 Monthly and quarterly revenue trends were analysed to identify periods of stronger and weaker sales performance.
+
+### 💷 Average Order Value (AOV)
+
+AOV is calculated as **monthly revenue divided by monthly unique invoices**. The analysis identifies the highest and lowest AOV months and compares average basket value over time.
+
+- **Overall AOV:** £534.40
+- **Highest monthly AOV:** 2011-12 — £779.97
+- **Lowest monthly AOV:** 2011-04 — £431.63
+
+The AOV chart provides an additional visualisation that helps distinguish changes in revenue caused by transaction volume from changes caused by average spend per order.
 
 ### 🛍️ Product Analysis
 
@@ -147,6 +158,7 @@ Every chart has a corresponding visible observation in the notebook and `outputs
 |---|---|
 | Monthly revenue trend | **2011-11** is the peak month at **£1,509,496.33**, showing a strong late-year sales peak. |
 | Quarterly revenue trend | **2011Q4** is the strongest quarter at **£3,303,268.31**, confirming the late-year increase extends beyond one month. |
+| Monthly AOV | **2011-12** has the highest AOV at **£779.97**, while **2011-04** has the lowest at **£431.63**; overall AOV is **£534.40**. |
 | Top 10 countries by revenue | The **United Kingdom contributes 84.6%** of total revenue, showing strong market concentration. |
 | Top 10 countries by orders | The UK leads with **18,019 unique invoices**, reinforcing its importance. |
 | Top 10 products by units sold | **PAPER CRAFT , LITTLE BIRDIE** leads with **80,995 units**. |
@@ -159,6 +171,7 @@ Every chart has a corresponding visible observation in the notebook and `outputs
 
 - **2011-11** was the strongest revenue month.
 - **2011Q4** was the strongest revenue quarter.
+- **December 2011** had the highest monthly AOV at **£779.97**, compared with the overall AOV of **£534.40**.
 - **PAPER CRAFT , LITTLE BIRDIE** was the best-selling product by **Quantity Sold**, with **80,995 units**.
 - After excluding non-product lines, **REGENCY CAKESTAND 3 TIER** was the highest-revenue product at approximately **£174,484.74**.
 - The **United Kingdom contributes approximately 84.6% of total revenue**.
@@ -166,7 +179,7 @@ Every chart has a corresponding visible observation in the notebook and `outputs
 - The large mean–median differences show that transaction values are skewed, so median and standard deviation are important alongside the mean.
 - The dataset does not support age/gender analysis or reliable product-category analysis.
 
-These results indicate substantial revenue concentration in the UK market and a meaningful difference between product volume and product revenue rankings.
+These results indicate substantial revenue concentration in the UK market, a meaningful difference between product volume and product revenue rankings, and variation in average basket value across months.
 
 ---
 
@@ -174,10 +187,11 @@ These results indicate substantial revenue concentration in the UK market and a 
 
 1. **Plan around peak periods** — Align inventory, staffing and promotional activity with periods of stronger demand.
 2. **Protect high-volume products** — Prioritise stock availability and explore cross-selling and bundling opportunities.
-3. **Separate volume from value** — Use Quantity Sold to identify best-selling products while using Revenue to identify high-value products.
-4. **Focus market investment** — Retain customers in major revenue markets while selectively testing smaller markets.
-5. **Improve customer identification** — Increasing `CustomerID` capture would support stronger retention, frequency and customer-lifetime-value analysis.
-6. **Collect missing business fields** — If age, gender or product-category analysis is required in future, obtain reliable fields rather than inferring them.
+3. **Use AOV to grow basket size** — Monitor AOV alongside order volume and test bundles, cross-selling and targeted promotions during lower-AOV periods.
+4. **Separate volume from value** — Use Quantity Sold to identify best-selling products while using Revenue to identify high-value products.
+5. **Focus market investment** — Retain customers in major revenue markets while selectively testing smaller markets.
+6. **Improve customer identification** — Increasing `CustomerID` capture would support stronger retention, frequency and customer-lifetime-value analysis.
+7. **Collect missing business fields** — If age, gender or product-category analysis is required in future, obtain reliable fields rather than inferring them.
 
 ---
 
@@ -207,6 +221,7 @@ DataAnalytics-L1-EDARetailSales/
 ├── 📂 outputs/
 │   ├── before_after_cleaning.csv
 │   ├── findings.md
+│   ├── monthly_aov.svg
 │   └── *.png                           ← Generated visualisations
 │
 ├── 📓 EDA_Retail_Sales.ipynb
@@ -266,7 +281,7 @@ Run the notebook cells from top to bottom. The notebook reads the **raw** datase
 
 This project demonstrates an end-to-end exploratory data analysis workflow:
 
-**Raw data → Data inspection → Data cleaning → Feature creation → Descriptive statistics → Trend analysis → Product analysis → Market analysis → Correlation analysis → Visualisation → Business insights → Recommendations**
+**Raw data → Data inspection → Data cleaning → Feature creation → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Market analysis → Correlation analysis → Visualisation → Business insights → Recommendations**
 
 ---
 
@@ -280,7 +295,7 @@ The project addresses the applicable requirements of the **OASIS INFOBYTE Data A
 - top-product analysis by volume and revenue
 - market analysis by country
 - correlation analysis
-- additional visualisation
+- additional AOV visualisation revealing variation in average basket value
 - visible written observations accompanying every visualization
 - actionable business recommendations
 - explicit documentation of unavailable dataset fields
