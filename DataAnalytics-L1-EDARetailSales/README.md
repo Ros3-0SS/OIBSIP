@@ -17,7 +17,7 @@ This project performs an **Exploratory Data Analysis (EDA)** of the Online Retai
 
 The analysis follows a reproducible **raw → clean → analyse → visualise → recommend** workflow. The notebook starts from the raw transaction file, applies the documented cleaning steps, saves the resulting cleaned dataset to `data/cleaned/`, and then performs the analysis.
 
-The project also documents important data limitations rather than making unsupported assumptions. For example, the dataset does not contain customer age, gender or a dedicated product-category field, so those analyses are not fabricated.
+The project documents important data limitations rather than making unsupported assumptions. The supplied dataset does not contain customer age, gender or a dedicated product-category field, so those analyses are not fabricated.
 
 ---
 
@@ -27,7 +27,7 @@ The project also documents important data limitations rather than making unsuppo
 - 🧹 Clean and prepare transaction-level data for analysis
 - 📊 Calculate mean, median, mode and standard deviation for key numerical variables
 - 📈 Analyse monthly and quarterly revenue trends
-- 🛍️ Identify high-volume and high-revenue products
+- 🛍️ Identify high-volume and high-revenue products, with **Quantity Sold** as the definition of best-selling
 - 🌍 Analyse revenue and order concentration across countries
 - 📊 Examine relationships between quantity, unit price and revenue
 - 💡 Identify useful business insights
@@ -52,18 +52,6 @@ The **raw dataset** is the input to the notebook. The **cleaned dataset** is the
 
 Because the CSV files are large, they are tracked with **Git LFS** rather than normal Git object storage. After cloning the repository, run `git lfs pull` before running the notebook so the actual datasets are downloaded instead of leaving only LFS pointer files in the working tree.
 
-### Dataset summary
-
-| Metric | Result |
-|---|---:|
-| Original transaction lines | 541,909 |
-| Clean sales transaction lines | 530,104 |
-| Unique invoices | 19,960 |
-| Unique products | 3,922 |
-| Countries | 38 |
-| Peak revenue month | 2011-11 |
-| Peak revenue quarter | 2011Q4 |
-
 ---
 
 ## 🧹 Data Cleaning
@@ -84,6 +72,8 @@ Revenue = Quantity × UnitPrice
 7. Retain transactions with missing `CustomerID` because a customer identifier is not required for transaction-level revenue analysis.
 8. Save the resulting clean sales dataset to `data/cleaned/online_retail_cleaned.csv`.
 
+For **product-level rankings**, the notebook additionally excludes shipping, service and administrative lines using the dataset's non-product stock codes (including postage, carriage, fees, discounts, manual entries and adjustments). This prevents logistics and administrative charges from being presented as products.
+
 ---
 
 ## 🔬 Analysis Performed
@@ -98,15 +88,15 @@ Monthly and quarterly revenue trends were analysed to identify periods of strong
 
 ### 🛍️ Product Analysis
 
-Products were ranked by **units sold** and **revenue** to distinguish high-volume products from products contributing the greatest sales value.
+Products are ranked by **Quantity Sold** and **Revenue**. **Quantity Sold is the definition used for best-selling products.** Revenue is reported separately because a product can generate high revenue without being the highest-volume item.
 
 ### 🌍 Market Analysis
 
-Country-level revenue and order counts were analysed to understand market concentration.
+Country-level revenue and order counts were analysed to understand market concentration. This is retained as an additional business insight.
 
 ### 🔗 Correlation Analysis
 
-A correlation heatmap was used to examine relationships between key numerical variables such as `Quantity`, `UnitPrice`, and `Revenue`.
+A correlation heatmap examines relationships between `Quantity`, `UnitPrice`, and `Revenue`. The notebook includes an actual written interpretation and notes that `Revenue` is mechanically calculated as `Quantity × UnitPrice`.
 
 ### 👥 Customer Data
 
@@ -114,7 +104,7 @@ Where `CustomerID` is available, customer-level information is explored. However
 
 ### 🗂️ Product Category Limitation
 
-The supplied dataset does **not** contain a dedicated product-category field. Therefore, revenue by product category cannot be calculated reliably without inventing categories. Product-level revenue and unit-volume analysis is provided instead.
+The supplied dataset does **not** contain a dedicated product-category field. Therefore, revenue by product category cannot be calculated reliably without inventing categories. Product-level revenue and unit-volume analysis is provided instead. This is a documented dataset limitation, not a missing calculation.
 
 ---
 
@@ -125,12 +115,12 @@ The project includes:
 - Monthly revenue trend
 - Quarterly revenue trend
 - Top 10 products by units sold
-- Top 10 products by revenue
+- Top 10 products by revenue, corrected to exclude non-product lines
 - Top 10 countries by revenue
 - Top 10 countries by number of orders
 - Correlation heatmap
 
-The visualisations are generated from the notebook and stored in the project's `outputs/` directory, with written observations provided alongside the charts.
+The visualisations are generated from the notebook and stored in the project's `outputs/` directory, with a written interpretation placed underneath every visualization in the notebook.
 
 ---
 
@@ -138,12 +128,13 @@ The visualisations are generated from the notebook and stored in the project's `
 
 - **2011-11** was the strongest revenue month.
 - **2011Q4** was the strongest revenue quarter.
-- **PAPER CRAFT , LITTLE BIRDIE** was the highest-volume product by units sold.
+- **PAPER CRAFT , LITTLE BIRDIE** was the best-selling product by **Quantity Sold**, with **80,995 units**.
+- After excluding non-product lines, **REGENCY CAKESTAND 3 TIER** was the highest-revenue product at approximately **£174,484.74**.
 - The **United Kingdom contributes approximately 84.6% of total revenue**.
 - The **top 10 countries contribute approximately 97.2% of total revenue**.
-- Average revenue per invoice is approximately **534.40**, compared with a median of approximately **303.84**.
+- The dataset does not support age/gender analysis or reliable product-category analysis.
 
-These results indicate substantial revenue concentration in the UK market and a noticeable difference between average and median invoice revenue.
+These results indicate substantial revenue concentration in the UK market and a meaningful difference between product volume and product revenue rankings.
 
 ---
 
@@ -151,8 +142,10 @@ These results indicate substantial revenue concentration in the UK market and a 
 
 1. **Plan around peak periods** — Align inventory, staffing and promotional activity with periods of stronger demand.
 2. **Protect high-volume products** — Prioritise stock availability and explore cross-selling and bundling opportunities.
-3. **Focus market investment** — Retain customers in major revenue markets while selectively testing smaller markets.
-4. **Improve customer identification** — Increasing `CustomerID` capture would support stronger retention, frequency and customer-lifetime-value analysis.
+3. **Separate volume from value** — Use Quantity Sold to identify best-selling products while using Revenue to identify high-value products.
+4. **Focus market investment** — Retain customers in major revenue markets while selectively testing smaller markets.
+5. **Improve customer identification** — Increasing `CustomerID` capture would support stronger retention, frequency and customer-lifetime-value analysis.
+6. **Collect missing business fields** — If age, gender or product-category analysis is required in future, obtain reliable fields rather than inferring them.
 
 ---
 
@@ -259,7 +252,7 @@ The project addresses the applicable requirements of the **OASIS INFOBYTE Data A
 - written observations accompanying the visualisations
 - actionable business recommendations
 
-Where the original task refers to **age/gender** and **product-category** analysis, the project explicitly documents that those fields are not present in the supplied dataset rather than fabricating findings.
+Where the original task refers to **age/gender** and **product-category** analysis, the project explicitly documents that those fields are not present in the supplied dataset rather than fabricating findings. Product-level postage/non-product lines are also excluded from product rankings.
 
 ---
 
