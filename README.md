@@ -1,66 +1,39 @@
-# OIBSIP — Data Analytics Portfolio
+# OIBSIP
 
-[![OASIS INFOBYTE](https://img.shields.io/badge/OASIS%20INFOBYTE-Data%20Analytics-blue)](https://oasisinfobyte.com/)
-[![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Jupyter](https://img.shields.io/badge/Jupyter-Notebooks-F37626?logo=jupyter&logoColor=white)](https://jupyter.org/)
-[![GitHub Actions](https://github.com/Ros3-0SS/OIBSIP/actions/workflows/run-eda-retail-sales.yml/badge.svg)](https://github.com/Ros3-0SS/OIBSIP/actions/workflows/run-eda-retail-sales.yml)
+## Oasis Infobyte Internship — Data Analytics
 
-> **OASIS INFOBYTE SIP — Data Analytics Portfolio**  
-> A collection of practical analytics and machine-learning projects covering data preparation, exploratory analysis, customer segmentation, fraud detection, model evaluation and business recommendations.
+This repository contains my **Oasis Infobyte Internship** projects for the Data Analytics track. The projects demonstrate practical skills in data cleaning, exploratory data analysis, visualisation, customer segmentation, machine learning, model evaluation and business recommendations.
 
----
+## 📊 Data Analytics Projects
 
-## 📌 About This Repository
+### Level 1
 
-This repository contains my **OASIS INFOBYTE Data Analytics internship projects**. Each project follows an end-to-end workflow: from preparing and analysing data to communicating findings and translating them into practical business recommendations.
+#### Task 1 — EDA on Online Retail Sales
+`DataAnalytics-L1-EDARetailSales/`
 
-The portfolio currently includes **three projects across Level 1 and Level 2**:
+Exploratory Data Analysis of online retail transactions, including data cleaning, descriptive statistics, revenue trends, Average Order Value (AOV), product analysis, country analysis, correlation analysis, visualisations, findings and business recommendations.
 
-| Level | Task | Project | Focus |
-|---|---|---|---|
-| Level 1 | Task 1 | [EDA on Online Retail Sales](./DataAnalytics-L1-EDARetailSales/) | Exploratory data analysis, sales trends, AOV, products, markets and correlations |
-| Level 1 | Task 2 | [Online Retail Customer Segmentation](./DataAnalytics-L1-CustomerSegmentation/) | RFM analysis, K-Means clustering and customer profiling |
-| Level 2 | Task 3 | [Fraud Detection](./DataAnalytics-L2-FraudDetection/) | Imbalanced classification, SMOTE, Logistic Regression and Random Forest |
+The notebook is validated automatically through **GitHub Actions**. The workflow executes the notebook from top to bottom, verifies the generated dataset and visualisations, and stores the execution results as a workflow artifact without creating automated commits on the `main` branch.
 
----
+The Online Retail Sales EDA project demonstrates an end-to-end analytics workflow:
 
-## 📊 Projects
+Raw data → Data inspection → Data cleaning → Feature engineering → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Country analysis → Correlation analysis → Visualisation → Findings → Business recommendations
 
-### Level 1 — Task 1: EDA on Online Retail Sales
+The project also documents important dataset limitations instead of making unsupported assumptions. In particular, the supplied retail dataset does not contain reliable age/gender fields or a dedicated product-category field, so those analyses are not fabricated.
 
-**Project:** [`DataAnalytics-L1-EDARetailSales/`](./DataAnalytics-L1-EDARetailSales/)
+#### Task 2 — Online Retail Customer Segmentation
+`DataAnalytics-L1-CustomerSegmentation/`
 
-An exploratory analysis of online retail transactions covering data cleaning, descriptive statistics, revenue trends, Average Order Value (AOV), product analysis, country analysis, correlation analysis, visualisations, findings and business recommendations.
+Customer segmentation using the UCI Online Retail dataset, RFM analysis and K-Means clustering. The project includes data preparation, exploratory analysis, feature engineering, standardisation, the Elbow Method, silhouette scoring, cluster profiling, visualisation and marketing recommendations.
 
-**Workflow:**
+### Level 2
 
-`Raw data → Data inspection → Data cleaning → Feature creation → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Market analysis → Correlation analysis → Visualisation → Findings → Recommendations`
+#### Task 3 — Fraud Detection
+`DataAnalytics-L2-FraudDetection/`
 
-The project also documents dataset limitations rather than inventing unavailable information. The supplied dataset does **not** contain reliable age/gender fields or a dedicated product-category field, so those analyses are intentionally not fabricated.
+Machine-learning fraud detection on a heavily imbalanced financial transaction dataset. The project uses exploratory data analysis, stratified train-test splitting, feature scaling, SMOTE oversampling, Logistic Regression and Random Forest models. Models are evaluated using Precision, Recall, F1-score and ROC-AUC, with confusion matrices, ROC curves and Random Forest feature importance included.
 
-**Automation:** The notebook is automatically executed and validated by GitHub Actions. The workflow checks the notebook from top to bottom, verifies required outputs and stores the execution results as an artifact. It uses read-only repository permissions and does **not** create automated commits on `main`.
-
-### Level 1 — Task 2: Online Retail Customer Segmentation
-
-**Project:** [`DataAnalytics-L1-CustomerSegmentation/`](./DataAnalytics-L1-CustomerSegmentation/)
-
-A customer segmentation project using the UCI Online Retail dataset, **Recency, Frequency and Monetary (RFM)** analysis and **K-Means clustering**.
-
-The project covers data preparation, exploratory analysis, RFM feature engineering, transformation and standardisation, cluster selection using the Elbow Method and Silhouette Score, cluster profiling, visualisation and marketing recommendations.
-
-### Level 2 — Task 3: Fraud Detection
-
-**Project:** [`DataAnalytics-L2-FraudDetection/`](./DataAnalytics-L2-FraudDetection/)
-
-A machine-learning fraud-detection project focused on severe class imbalance. The workflow uses a stratified train-test split, feature scaling, **SMOTE**, Logistic Regression and Random Forest models.
-
-Models are evaluated using **Precision, Recall, F1-score and ROC-AUC**, with confusion matrices, ROC curves and Random Forest feature importance.
-
-**Experiment result:** Random Forest achieved **80.0% precision, 85.7% recall, 82.8% F1-score and 97.8% ROC-AUC** on the evaluated test set.
-
-> **Note:** These model results are experimental and should not be treated as a production financial-fraud decision system.
-
----
+**Key result:** Random Forest achieved the strongest overall balance, with **80.0% precision, 85.7% recall, 82.8% F1-score and 97.8% ROC-AUC** on the test set.
 
 ## 🛠️ Tools & Technologies
 
