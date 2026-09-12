@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   execute-notebook:
@@ -33,6 +33,53 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install pandas numpy matplotlib seaborn jupyter nbconvert; fi
           pip install jupyter nbconvert
+
+      - name: Remove redundant Markdown graph embeds
+        working-directory: DataAnalytics-L1-EDARetailSales
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path('EDA_Retail_Sales.ipynb')
+          nb = json.loads(path.read_text(encoding='utf-8'))
+          image_paths = {
+              'outputs/monthly_revenue_trend.png',
+              'outputs/monthly_aov.svg',
+              'outputs/top_10_countries_by_revenue.png',
+              'outputs/top_10_countries_by_orders.png',
+              'outputs/top_10_products_by_units.png',
+              'outputs/top_10_products_by_revenue.png',
+              'outputs/correlation_heatmap.png',
+          }
+          changed = False
+          for cell in nb['cells']:
+              if cell.get('cell_type') != 'markdown':
+                  continue
+              source = cell.get('source', [])
+              text = ''.join(source)
+              lines = text.splitlines(keepends=True)
+              filtered = [line for line in lines if not any(f']({img})' in line for img in image_paths)]
+              if filtered != lines:
+                  cell['source'] = filtered
+                  changed = True
+          if changed:
+              path.write_text(json.dumps(nb, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
+              print('Removed redundant Markdown graph embeds.')
+          else:
+              print('No redundant Markdown graph embeds found.')
+          PY
+
+      - name: Commit notebook presentation fix
+        run: |
+          git config user.name 'Ntsako Sibanda'
+          git config user.email 'sibandantsako1@gmail.com'
+          git add DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb
+          if git diff --cached --quiet; then
+            echo 'No notebook presentation changes to commit.'
+            exit 0
+          fi
+          git commit -m 'fix: remove duplicate graph displays from EDA notebook'
+          git push origin HEAD:main
 
       - name: Execute notebook from top to bottom
         working-directory: DataAnalytics-L1-EDARetailSales
