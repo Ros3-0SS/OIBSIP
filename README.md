@@ -15,6 +15,12 @@ Exploratory Data Analysis of online retail transactions, including data cleaning
 
 The notebook is validated automatically through **GitHub Actions**. The workflow executes the notebook from top to bottom, verifies the generated dataset and visualisations, and stores the execution results as a workflow artifact without creating automated commits on the `main` branch.
 
+The Online Retail Sales EDA project demonstrates an end-to-end analytics workflow:
+
+Raw data → Data inspection → Data cleaning → Feature engineering → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Country analysis → Correlation analysis → Visualisation → Findings → Business recommendations
+
+The project also documents important dataset limitations instead of making unsupported assumptions. In particular, the supplied retail dataset does not contain reliable age/gender fields or a dedicated product-category field, so those analyses are not fabricated.
+
 #### Task 2 — Online Retail Customer Segmentation
 `DataAnalytics-L1-CustomerSegmentation/`
 
@@ -158,13 +164,6 @@ The workflow uses **read-only repository permissions** and does not automaticall
 
 The goal of these projects is to strengthen practical data analytics and machine-learning skills by completing end-to-end projects — from data preparation and exploratory analysis to visualisation, modelling, evaluation, interpretation and business recommendations.
 
-## 📌 Current Focus — Task 1
-
-The **Online Retail Sales EDA** project demonstrates an end-to-end analytics workflow:
-
-**Raw data → Data inspection → Data cleaning → Feature engineering → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Country analysis → Correlation analysis → Visualisation → Findings → Business recommendations**
-
-The project also documents important dataset limitations instead of making unsupported assumptions. In particular, the supplied retail dataset does not contain reliable **age/gender fields** or a dedicated **product-category field**, so those analyses are not fabricated.
 
 ## 👩🏽‍💻 Author
 
