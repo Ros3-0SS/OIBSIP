@@ -11,15 +11,11 @@ This repository contains my **Oasis Infobyte Internship** projects for the Data 
 #### Task 1 — EDA on Online Retail Sales
 `DataAnalytics-L1-EDARetailSales/`
 
-Exploratory Data Analysis of online retail transactions, including data cleaning, descriptive statistics, revenue trends, Average Order Value (AOV), product analysis, country analysis, correlation analysis, visualisations, findings and business recommendations.
+An end-to-end exploratory data analysis of online retail transactions, covering data cleaning, descriptive statistics, revenue and trend analysis, Average Order Value (AOV), product and country analysis, correlation analysis, visualisation, and business recommendations.
 
-The notebook is validated automatically through **GitHub Actions**. The workflow executes the notebook from top to bottom, verifies the generated dataset and visualisations, and stores the execution results as a workflow artifact without creating automated commits on the `main` branch.
+The project demonstrates a complete data analytics workflow, from raw data preparation and feature engineering through exploratory analysis and visualisation to actionable business insights.
 
-The Online Retail Sales EDA project demonstrates an end-to-end analytics workflow:
-
-Raw data → Data inspection → Data cleaning → Feature engineering → Descriptive statistics → Trend analysis → AOV analysis → Product analysis → Country analysis → Correlation analysis → Visualisation → Findings → Business recommendations
-
-The project also documents important dataset limitations instead of making unsupported assumptions. In particular, the supplied retail dataset does not contain reliable age/gender fields or a dedicated product-category field, so those analyses are not fabricated.
+The notebook is automatically validated using **GitHub Actions**, which executes the analysis from start to finish and verifies the expected outputs without making automated commits to the `main` branch.
 
 #### Task 2 — Online Retail Customer Segmentation
 `DataAnalytics-L1-CustomerSegmentation/`
