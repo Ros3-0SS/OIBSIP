@@ -77,7 +77,7 @@ For **product-level rankings**, the notebook additionally excludes shipping, ser
 
 ---
 
-## 📐 Numerical Statistics — Why These Measures Matter
+## 📐 Descriptive Statistics — Why These Measures Matter
 
 The descriptive-statistics requirement is applied to the three numerical variables with direct business meaning: **Quantity, UnitPrice and Revenue**. The CSV `index` column is a technical row identifier, not a business measure, so it is intentionally excluded.
 
