@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   execute-notebook:
@@ -54,16 +54,12 @@ jobs:
           print(f'Executed {len(code_cells)} code cells successfully.')
           PY
 
-      - name: Commit executed notebook and generated outputs
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv DataAnalytics-L1-EDARetailSales/outputs/
-          if git diff --cached --quiet; then
-            echo 'No generated changes to commit.'
-            exit 0
-          fi
-          git commit -m 'Run EDA retail sales notebook and save outputs'
-          git fetch origin main
-          git rebase origin/main
-          git push origin HEAD:main
+      - name: Upload executed notebook and generated outputs as workflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: eda-retail-sales-run
+          path: |
+            DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb
+            DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv
+            DataAnalytics-L1-EDARetailSales/outputs/
+          if-no-files-found: error
