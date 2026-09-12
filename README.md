@@ -13,7 +13,7 @@ This repository contains my **Oasis Infobyte Internship** projects for the Data 
 
 Exploratory Data Analysis of online retail transactions, including data cleaning, descriptive statistics, revenue trends, Average Order Value (AOV), product analysis, country analysis, correlation analysis, visualisations, findings and business recommendations.
 
-The notebook is executed automatically through **GitHub Actions** and the generated notebook, cleaned dataset and visualisations are saved back to the repository.
+The notebook is validated automatically through **GitHub Actions**. The workflow executes the notebook from top to bottom, verifies the generated dataset and visualisations, and stores the execution results as a workflow artifact without creating automated commits on the `main` branch.
 
 #### Task 2 — Online Retail Customer Segmentation
 `DataAnalytics-L1-CustomerSegmentation/`
@@ -52,6 +52,7 @@ Machine-learning fraud detection on a heavily imbalanced financial transaction d
 ### Automation & Reproducibility
 - **GitHub Actions** — Automatically executes and validates the Task 1 EDA notebook
 - **nbconvert** — Executes the Jupyter notebook non-interactively in the GitHub Actions workflow
+- **actions/upload-artifact** — Stores workflow-generated execution results without committing generated files automatically
 - **requirements.txt** — Records Python dependencies for reproducible environments
 
 ## 📁 Repository Structure
@@ -63,7 +64,7 @@ OIBSIP/
 │
 ├── 📂 .github/
 │   └── 📂 workflows/
-│       └── run-eda-retail-sales.yml   ← Automated Task 1 notebook execution
+│       └── run-eda-retail-sales.yml   ← Automated Task 1 notebook validation
 │
 ├── 📂 DataAnalytics-L1-EDARetailSales/
 │   ├── 📄 README.md
@@ -149,9 +150,9 @@ The workflow automatically:
 4. Executes `EDA_Retail_Sales.ipynb` from top to bottom.
 5. Verifies that the cleaned dataset and required visualisations were generated.
 6. Verifies that the notebook contains executed code cells and outputs.
-7. Commits the executed notebook and generated outputs back to the `main` branch.
+7. Uploads the executed notebook, cleaned dataset and generated outputs as a workflow artifact.
 
-This provides a reproducible way to validate that the EDA project can run successfully from the repository.
+The workflow uses **read-only repository permissions** and does not automatically commit generated files to the `main` branch. This keeps the repository history focused on student-authored project changes while still providing automated execution and validation.
 
 ## 🎯 Internship Goal
 
