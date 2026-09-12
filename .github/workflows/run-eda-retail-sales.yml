@@ -1,0 +1,77 @@
+name: Run EDA Retail Sales Notebook
+
+on:
+  push:
+    paths:
+      - 'DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb'
+      - 'DataAnalytics-L1-EDARetailSales/data/**'
+      - '.github/workflows/run-eda-retail-sales.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  execute-notebook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository with Git LFS
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        working-directory: DataAnalytics-L1-EDARetailSales
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install pandas numpy matplotlib seaborn jupyter nbconvert; fi
+          pip install jupyter nbconvert
+
+      - name: Execute notebook from top to bottom
+        working-directory: DataAnalytics-L1-EDARetailSales
+        run: |
+          jupyter nbconvert --to notebook --execute EDA_Retail_Sales.ipynb --output EDA_Retail_Sales.ipynb --ExecutePreprocessor.timeout=600
+
+      - name: Verify generated outputs
+        working-directory: DataAnalytics-L1-EDARetailSales
+        run: |
+          test -f data/cleaned/online_retail_cleaned.csv
+          test -f outputs/monthly_revenue_trend.png
+          test -f outputs/quarterly_revenue_trend.png
+          test -f outputs/monthly_aov.png
+          test -f outputs/monthly_aov.svg
+          test -f outputs/top_10_countries_by_revenue.png
+          test -f outputs/top_10_countries_by_orders.png
+          test -f outputs/top_10_products_by_units.png
+          test -f outputs/top_10_products_by_revenue.png
+          test -f outputs/correlation_heatmap.png
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('EDA_Retail_Sales.ipynb')
+          nb = json.loads(p.read_text(encoding='utf-8'))
+          code_cells = [c for c in nb['cells'] if c.get('cell_type') == 'code']
+          assert code_cells and all(c.get('execution_count') is not None for c in code_cells), 'Notebook contains unexecuted code cells'
+          assert all('outputs' in c for c in code_cells), 'Notebook output field missing'
+          print(f'Executed {len(code_cells)} code cells successfully.')
+          PY
+
+      - name: Commit executed notebook and generated outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb \
+                  DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv \
+                  DataAnalytics-L1-EDARetailSales/outputs/
+          if git diff --cached --quiet; then
+            echo 'No generated changes to commit.'
+          else
+            git commit -m 'Run EDA retail sales notebook and save outputs'
+            git push
+          fi
