@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -36,29 +37,20 @@ jobs:
       - name: Execute notebook from top to bottom
         working-directory: DataAnalytics-L1-EDARetailSales
         run: |
-          jupyter nbconvert --to notebook --execute EDA_Retail_Sales.ipynb --output EDA_Retail_Sales.ipynb --ExecutePreprocessor.timeout=600
+          jupyter nbconvert --to notebook --execute EDA_Retail_Sales.ipynb --output EDA_Retail_Sales.ipynb --ExecutePreprocessor.timeout=600 --ExecutePreprocessor.kernel_name=python3
 
-      - name: Verify generated outputs
+      - name: Verify generated outputs and notebook execution
         working-directory: DataAnalytics-L1-EDARetailSales
         run: |
           test -f data/cleaned/online_retail_cleaned.csv
-          test -f outputs/monthly_revenue_trend.png
-          test -f outputs/quarterly_revenue_trend.png
-          test -f outputs/monthly_aov.png
-          test -f outputs/monthly_aov.svg
-          test -f outputs/top_10_countries_by_revenue.png
-          test -f outputs/top_10_countries_by_orders.png
-          test -f outputs/top_10_products_by_units.png
-          test -f outputs/top_10_products_by_revenue.png
-          test -f outputs/correlation_heatmap.png
+          for f in monthly_revenue_trend.png quarterly_revenue_trend.png monthly_aov.png monthly_aov.svg top_10_countries_by_revenue.png top_10_countries_by_orders.png top_10_products_by_units.png top_10_products_by_revenue.png correlation_heatmap.png; do test -f "outputs/$f"; done
           python - <<'PY'
           import json
           from pathlib import Path
-          p = Path('EDA_Retail_Sales.ipynb')
-          nb = json.loads(p.read_text(encoding='utf-8'))
+          nb = json.loads(Path('EDA_Retail_Sales.ipynb').read_text(encoding='utf-8'))
           code_cells = [c for c in nb['cells'] if c.get('cell_type') == 'code']
-          assert code_cells and all(c.get('execution_count') is not None for c in code_cells), 'Notebook contains unexecuted code cells'
-          assert all('outputs' in c for c in code_cells), 'Notebook output field missing'
+          assert code_cells and all(c.get('execution_count') is not None for c in code_cells)
+          assert all('outputs' in c for c in code_cells)
           print(f'Executed {len(code_cells)} code cells successfully.')
           PY
 
@@ -66,12 +58,12 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb \
-                  DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv \
-                  DataAnalytics-L1-EDARetailSales/outputs/
+          git add DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv DataAnalytics-L1-EDARetailSales/outputs/
           if git diff --cached --quiet; then
             echo 'No generated changes to commit.'
-          else
-            git commit -m 'Run EDA retail sales notebook and save outputs'
-            git push
+            exit 0
           fi
+          git commit -m 'Run EDA retail sales notebook and save outputs'
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
