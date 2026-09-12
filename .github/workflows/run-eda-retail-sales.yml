@@ -5,11 +5,12 @@ on:
     paths:
       - 'DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb'
       - 'DataAnalytics-L1-EDARetailSales/data/**'
+      - 'DataAnalytics-L1-EDARetailSales/scripts/**'
       - '.github/workflows/run-eda-retail-sales.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   execute-notebook:
@@ -31,15 +32,18 @@ jobs:
         working-directory: DataAnalytics-L1-EDARetailSales
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install pandas numpy matplotlib seaborn jupyter nbconvert; fi
-          pip install jupyter nbconvert
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; else pip install pandas numpy matplotlib seaborn jupyter nbconvert nbformat; fi
+          pip install jupyter nbconvert nbformat
+
+      - name: Improve notebook visuals
+        run: python DataAnalytics-L1-EDARetailSales/scripts/improve_notebook_visuals.py
 
       - name: Execute notebook from top to bottom
         working-directory: DataAnalytics-L1-EDARetailSales
         run: |
           jupyter nbconvert --to notebook --execute EDA_Retail_Sales.ipynb --output EDA_Retail_Sales.ipynb --ExecutePreprocessor.timeout=600 --ExecutePreprocessor.kernel_name=python3
 
-      - name: Verify generated outputs and notebook execution
+      - name: Verify generated outputs and embedded notebook results
         working-directory: DataAnalytics-L1-EDARetailSales
         run: |
           test -f data/cleaned/online_retail_cleaned.csv
@@ -50,9 +54,21 @@ jobs:
           nb = json.loads(Path('EDA_Retail_Sales.ipynb').read_text(encoding='utf-8'))
           code_cells = [c for c in nb['cells'] if c.get('cell_type') == 'code']
           assert code_cells and all(c.get('execution_count') is not None for c in code_cells)
-          assert all('outputs' in c for c in code_cells)
-          print(f'Executed {len(code_cells)} code cells successfully.')
+          assert any(c.get('outputs') for c in code_cells), 'Notebook has no embedded outputs.'
+          print(f'Executed {len(code_cells)} code cells successfully with embedded outputs.')
           PY
+
+      - name: Commit executed notebook and refreshed visuals
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb DataAnalytics-L1-EDARetailSales/outputs DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv
+          if git diff --cached --quiet; then
+            echo "No generated changes to commit."
+          else
+            git commit -m "Refresh EDA retail sales visuals and embed notebook results"
+            git push
+          fi
 
       - name: Upload executed notebook and generated outputs as workflow artifacts
         uses: actions/upload-artifact@v4
