@@ -6,7 +6,36 @@
 - Cancelled invoices, non-positive quantities/prices and invalid dates were excluded from sales-performance analysis.
 - Clean sales transaction lines: **530,104**.
 - CustomerID is missing for **132,220** cleaned transaction lines.
-- The dataset does **not** contain age or gender fields, so age-group and gender analysis is not fabricated.
+
+## Descriptive statistics — numerical justification
+The descriptive-statistics requirement is applied to the three numerical variables that have direct business meaning: **Quantity, UnitPrice and Revenue**. The CSV `index` column is only a technical row identifier, so including it would produce statistics with no commercial interpretation.
+
+For each business variable, the project reports **mean, median, mode and standard deviation** because they answer different questions:
+- **Mean:** average transaction-level value, useful for estimating typical arithmetic scale but sensitive to unusually large transactions.
+- **Median:** middle transaction value, useful for describing the typical transaction when the distribution is skewed.
+- **Mode:** most frequently occurring value, useful for identifying the most common quantity, price or revenue value.
+- **Standard deviation:** measures transaction-to-transaction dispersion around the mean and shows how variable the observations are.
+
+The results are:
+
+| Variable | Mean | Median | Mode | Standard deviation |
+|---|---:|---:|---:|---:|
+| Quantity | 10.54 | 3.00 | 1.00 | 155.52 |
+| UnitPrice | £3.91 | £2.08 | £1.25 | £35.92 |
+| Revenue | £20.12 | £9.90 | £15.00 | £270.36 |
+
+The large gap between mean and median, especially for **Quantity (10.54 vs 3)** and **Revenue (£20.12 vs £9.90)**, indicates that the transaction-level distributions are right-skewed and influenced by larger purchases. Therefore, the median is important alongside the mean; reporting only the mean would hide the typical transaction experience. The relatively large standard deviations reinforce that transaction values vary substantially across orders.
+
+## Dataset limitations — two impossible requirements
+The following two requested analyses are **impossible with the supplied dataset**, rather than merely unfinished:
+
+### 1. Age and gender analysis — impossible from the supplied fields
+The dataset contains **no age field and no gender field**. There is therefore no reliable variable from which to calculate age groups or gender-based sales patterns. Inferring these attributes from names, descriptions, countries or other fields would introduce unsupported assumptions and would not be valid EDA. **Age/gender analysis is explicitly omitted because the required data does not exist.**
+
+### 2. Product-category analysis — impossible from the supplied fields
+The dataset contains **no dedicated product-category field**. Stock codes and descriptions identify individual products but do not provide an authoritative category taxonomy. Creating categories manually would introduce subjective classifications and could change the results. **Revenue by product category is explicitly omitted because the required data does not exist.**
+
+These are documented **dataset limitations**, not missing calculations.
 
 ## Product-level methodology
 - **Best-selling products are defined by total Quantity Sold**, not revenue.
@@ -32,6 +61,17 @@ The previous revenue leader, **DOTCOM POSTAGE**, is intentionally absent because
 - Leading product by units: **PAPER CRAFT , LITTLE BIRDIE**, with **80,995 units**.
 - Best-selling status is therefore based on **Quantity Sold**, while revenue is a separate performance measure.
 
+## Visible chart observations
+Every project chart has a corresponding written observation in the notebook and this findings file:
+
+1. **Monthly revenue trend:** **2011-11** is the peak month at **£1,509,496.33**, showing a strong late-year sales peak.
+2. **Quarterly revenue trend:** **2011Q4** is the strongest quarter at **£3,303,268.31**, confirming that the late-year increase extends beyond a single month.
+3. **Top 10 countries by revenue:** the **United Kingdom contributes 84.6%** of total revenue, showing strong market concentration.
+4. **Top 10 countries by orders:** the United Kingdom leads with **18,019 unique invoices**, reinforcing the importance of the domestic market.
+5. **Top 10 products by units sold:** **PAPER CRAFT , LITTLE BIRDIE** leads with **80,995 units**, making it the highest-volume product.
+6. **Top 10 products by revenue:** **REGENCY CAKESTAND 3 TIER** leads at **£174,484.74** after non-product lines are excluded, demonstrating that the revenue leader differs from the volume leader.
+7. **Correlation heatmap:** **Quantity and Revenue correlate at 0.91**, while **UnitPrice and Revenue correlate at 0.14**; the strong Quantity–Revenue relationship is expected because Revenue is calculated as Quantity × UnitPrice.
+
 ## Sales trends
 - Highest-revenue month: **2011-11**, revenue **£1,509,496.33**.
 - Highest-revenue quarter: **2011Q4**, revenue **£3,303,268.31**.
@@ -46,12 +86,6 @@ The previous revenue leader, **DOTCOM POSTAGE**, is intentionally absent because
 - UnitPrice and Revenue have a weak positive correlation of **0.14**.
 - Quantity and UnitPrice are essentially uncorrelated at **-0.00**.
 - These relationships should not be interpreted as independent causation because **Revenue is mechanically calculated as Quantity × UnitPrice**.
-
-## Product category limitation
-- The supplied dataset contains **no dedicated product-category field**. Revenue by category cannot be calculated reliably without inventing categories, so category analysis is intentionally omitted.
-
-## Age/gender limitation
-- The supplied dataset contains **no age or gender variables**. Demographic analysis by age or gender is therefore not supported by the available data and is intentionally omitted.
 
 ## Actionable recommendations
 1. Plan inventory, staffing, and campaigns around peak periods.
