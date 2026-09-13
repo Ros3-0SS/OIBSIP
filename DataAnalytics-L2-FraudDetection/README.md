@@ -291,26 +291,6 @@ Run the notebook **from top to bottom** so that the data preparation, EDA, SMOTE
 
 ---
 
-## 📋 OASIS INFOBYTE Task 3 Alignment
-
-| Requirement | Status |
-|---|:---:|
-| Dataset loading and fraud-percentage analysis | ✅ |
-| Fraud vs legitimate transaction-amount analysis | ✅ |
-| Time-of-day analysis | ✅ |
-| Explanation of misleading accuracy | ✅ |
-| SMOTE class-imbalance handling | ✅ |
-| Stratified train/test split | ✅ |
-| Logistic Regression | ✅ |
-| Random Forest | ✅ |
-| Precision, Recall, F1-score and ROC-AUC | ✅ |
-| Confusion matrices and ROC curve | ✅ |
-| Recall vs Precision trade-off | ✅ |
-| Random Forest feature importance | ✅ |
-| Scalability discussion for 1 million transactions/hour | ✅ |
-
----
-
 ## 📈 Skills Demonstrated
 
 This project demonstrates an end-to-end **imbalanced classification** workflow:
