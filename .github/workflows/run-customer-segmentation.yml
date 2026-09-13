@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   execute-notebook:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -24,6 +25,78 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r DataAnalytics-L1-CustomerSegmentation/requirements.txt
           pip install jupyter nbconvert ucimlrepo
+
+      - name: Patch notebook for current UCI package and OASIS visualisation requirements
+        working-directory: DataAnalytics-L1-CustomerSegmentation/notebooks
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('Online_Retail_Customer_Segmentation.ipynb')
+          nb = json.loads(p.read_text(encoding='utf-8'))
+
+          # Current ucimlrepo exposes the complete transaction table under data.original.
+          for cell in nb['cells']:
+              if cell.get('cell_type') == 'code':
+                  src = ''.join(cell.get('source', []))
+                  src = src.replace('online_retail.data.features.copy()', 'online_retail.data.original.copy()')
+                  src = src.replace('plt.show\n', 'plt.show()\n')
+                  cell['source'] = src.splitlines(True)
+
+          # Add the second required cluster feature-combination visualisation if it is absent.
+          if not any('Recency vs Frequency' in ''.join(c.get('source', [])) for c in nb['cells']):
+              nb['cells'].extend([
+                  {
+                      'cell_type':'markdown','metadata':{},
+                      'source':['### Additional cluster visualisation — Recency vs Frequency\n',
+                                'This second feature combination complements Frequency vs Monetary Value and shows how recent activity differs across the customer segments.\n']
+                  },
+                  {
+                      'cell_type':'code','execution_count':None,'metadata':{},'outputs':[],
+                      'source':[
+                          'fig, ax = plt.subplots(figsize=(10,6))\n',
+                          'for cluster in sorted(rfm[\'Cluster\'].unique()):\n',
+                          '    subset = rfm[rfm[\'Cluster\'] == cluster]\n',
+                          '    ax.scatter(subset[\'Recency\'], subset[\'Frequency\'], label=f\'Cluster {cluster}\', alpha=0.6)\n',
+                          'ax.set_title(\'Customer Segments: Recency vs Frequency\')\n',
+                          'ax.set_xlabel(\'Recency (days)\')\n',
+                          'ax.set_ylabel(\'Frequency (unique invoices)\')\n',
+                          'ax.legend(title=\'Segment\')\n',
+                          'plt.tight_layout()\n',
+                          "fig.savefig(OUTPUTS/'customer_segments_scatter_recency_frequency.png', dpi=160, bbox_inches='tight')\n",
+                          'plt.show()\n'
+                      ]
+                  }
+              ])
+
+          # Add explicit segment profile and marketing actions if the notebook does not already contain them.
+          if not any('RecommendedMarketingAction' in ''.join(c.get('source', [])) for c in nb['cells']):
+              nb['cells'].extend([
+                  {'cell_type':'markdown','metadata':{},'source':['## Customer segment types and recommended marketing actions\n']},
+                  {'cell_type':'code','execution_count':None,'metadata':{},'outputs':[],
+                   'source':[
+                       'segment_profile = rfm.groupby(\'Cluster\')[[\'Recency\',\'Frequency\',\'Monetary\']].mean().round(2)\n',
+                       'rows = []\n',
+                       'for cluster, row in segment_profile.iterrows():\n',
+                       '    if row[\'Recency\'] <= rfm[\'Recency\'].median() and row[\'Frequency\'] >= rfm[\'Frequency\'].median() and row[\'Monetary\'] >= rfm[\'Monetary\'].median():\n',
+                       '        customer_type = \'High-value / loyal\'\n',
+                       '        action = \'Protect with loyalty rewards, early access and personalised cross-sell offers.\'\n',
+                       '    elif row[\'Recency\'] > rfm[\'Recency\'].median() and row[\'Frequency\'] < rfm[\'Frequency\'].median():\n',
+                       '        customer_type = \'At-risk / inactive\'\n',
+                       '        action = \'Run win-back campaigns, reminders and targeted incentives to reactivate.\'\n',
+                       '    else:\n',
+                       '        customer_type = \'Developing / opportunity\'\n',
+                       '        action = \'Use personalised recommendations, bundles and promotions to increase frequency and value.\'\n',
+                       '    rows.append([cluster, row[\'Recency\'], row[\'Frequency\'], row[\'Monetary\'], customer_type, action])\n',
+                       "segment_summary = pd.DataFrame(rows, columns=['Cluster','Recency','Frequency','Monetary','CustomerType','RecommendedMarketingAction'])\n",
+                       'display(segment_summary)\n',
+                       "segment_summary.to_csv(OUTPUTS/'segment_profile_and_actions.csv', index=False)\n"
+                   ]}
+              ])
+
+          p.write_text(json.dumps(nb, ensure_ascii=False, indent=1), encoding='utf-8')
+          print('Notebook patched successfully.')
+          PY
 
       - name: Execute notebook from top to bottom
         working-directory: DataAnalytics-L1-CustomerSegmentation/notebooks
@@ -43,6 +116,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Execute Customer Segmentation notebook"
+            git commit -m "Execute and verify Customer Segmentation notebook"
             git push
           fi
