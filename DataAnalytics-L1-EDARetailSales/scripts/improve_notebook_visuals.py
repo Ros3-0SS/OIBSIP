@@ -7,16 +7,15 @@ import nbformat
 NB_PATH = Path("DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb")
 
 
-def remove_old_interpretations(nb):
-    """Remove interpretation cells created by an earlier post-processing run."""
-    cleaned = []
-    for cell in nb.cells:
-        if cell.cell_type == "markdown":
-            text = cell.source.strip()
-            if text.startswith("**Interpretation:**") or text.startswith("Interpretation:"):
-                continue
-        cleaned.append(cell)
-    nb.cells = cleaned
+def clean_interpretation_markdown(cell):
+    """Remove decorative labels from interpretation cells."""
+    if cell.cell_type != "markdown":
+        return
+    text = cell.source.strip()
+    text = text.replace("**📌 Observation:** ", "")
+    text = text.replace("**💼 Business implication:** ", "")
+    text = text.replace("**Interpretation:** ", "")
+    cell.source = text
 
 
 def refresh_visuals(nb):
@@ -36,19 +35,59 @@ def refresh_visuals(nb):
         "sns.heatmap(corr, annot=True, fmt='.2f', cmap='Blues', ax=ax)": "sns.heatmap(corr, annot=True, fmt='.2f', cmap='Blues', linewidths=0.5, square=True, ax=ax)",
     }
 
-    remove_old_interpretations(nb)
-
-    for cell in nb.cells:
+    new_cells = []
+    i = 0
+    while i < len(nb.cells):
+        cell = nb.cells[i]
         if cell.cell_type != "code":
+            clean_interpretation_markdown(cell)
+            new_cells.append(cell)
+            i += 1
             continue
+
         src = cell.source
         for old, new in replacements.items():
             src = src.replace(old, new)
-
-        # Do not add plt.show() after display(fig): in Jupyter this renders the
-        # same figure twice. display(fig) is sufficient for the embedded output.
+        src = src.replace("from IPython.display import display, Markdown\n", "")
         src = src.replace("display(fig)\nplt.show()", "display(fig)")
+        src = src.replace("\nplt.show()", "")
+
+        if "display(Markdown(" in src:
+            parts = []
+            current = []
+            for line in src.splitlines(True):
+                if "display(Markdown(" in line:
+                    if current:
+                        parts.append("".join(current).strip())
+                        current = []
+                    continue
+                current.append(line)
+            if current:
+                parts.append("".join(current).strip())
+
+            interpretations = []
+            j = i + 1
+            while j < len(nb.cells) and len(interpretations) < len(parts):
+                if nb.cells[j].cell_type == "markdown":
+                    clean_interpretation_markdown(nb.cells[j])
+                    interpretations.append(nb.cells[j])
+                    j += 1
+                else:
+                    break
+
+            for k, part in enumerate(parts):
+                if part:
+                    new_cells.append(nbformat.v4.new_code_cell(part))
+                    if k < len(interpretations):
+                        new_cells.append(interpretations[k])
+            i = j if len(interpretations) == len(parts) else i + 1
+            continue
+
         cell.source = src
+        new_cells.append(cell)
+        i += 1
+
+    nb.cells = new_cells
 
     if not any(
         c.cell_type == "markdown" and "Visualisation standards" in c.source
@@ -74,13 +113,7 @@ def refresh_visuals(nb):
 
 
 def split_interpretation_outputs(nb):
-    """Move rendered Markdown observations into clean Markdown cells.
-
-    The final notebook order is visual/table -> interpretation -> next visual/table.
-    Existing interpretation cells are removed first so repeated workflow runs cannot
-    duplicate them.
-    """
-    remove_old_interpretations(nb)
+    """Move any remaining rendered Markdown observations into clean Markdown cells."""
     new_cells = []
     moved = 0
 
@@ -94,18 +127,8 @@ def split_interpretation_outputs(nb):
         for output in cell.outputs:
             markdown_data = output.get("data", {}).get("text/markdown")
             if markdown_data:
-                if isinstance(markdown_data, list):
-                    markdown_text = "".join(markdown_data)
-                else:
-                    markdown_text = markdown_data
-
-                # Keep the interpretation as clean prose rather than a decorated heading.
-                markdown_text = markdown_text.strip()
-                if markdown_text.startswith("**Interpretation:**"):
-                    markdown_text = markdown_text[len("**Interpretation:**"):].strip()
-                elif markdown_text.startswith("Interpretation:"):
-                    markdown_text = markdown_text[len("Interpretation:"):].strip()
-
+                markdown_text = "".join(markdown_data) if isinstance(markdown_data, list) else markdown_data
+                markdown_text = markdown_text.strip().replace("**📌 Observation:** ", "").replace("**💼 Business implication:** ", "").replace("**Interpretation:** ", "")
                 markdown_cells.append(nbformat.v4.new_markdown_cell(markdown_text))
                 moved += 1
             else:
