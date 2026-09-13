@@ -18,6 +18,25 @@ def clean_interpretation_markdown(cell):
     cell.source = text
 
 
+def remove_repeated_markdown_cells(nb):
+    """Remove consecutive duplicate Markdown cells so the notebook stays idempotent."""
+    cleaned = []
+    previous_markdown = None
+
+    for cell in nb.cells:
+        if cell.cell_type == "markdown":
+            clean_interpretation_markdown(cell)
+            current = cell.source.strip()
+            if current and current == previous_markdown:
+                continue
+            previous_markdown = current
+        else:
+            previous_markdown = None
+        cleaned.append(cell)
+
+    nb.cells = cleaned
+
+
 def refresh_visuals(nb):
     replacements = {
         "fig, ax = plt.subplots(figsize=(12, 5))": "fig, ax = plt.subplots(figsize=(14, 6))",
@@ -88,6 +107,7 @@ def refresh_visuals(nb):
         i += 1
 
     nb.cells = new_cells
+    remove_repeated_markdown_cells(nb)
 
     if not any(
         c.cell_type == "markdown" and "Visualisation standards" in c.source
@@ -139,6 +159,7 @@ def split_interpretation_outputs(nb):
         new_cells.extend(markdown_cells)
 
     nb.cells = new_cells
+    remove_repeated_markdown_cells(nb)
     return moved
 
 
