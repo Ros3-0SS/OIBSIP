@@ -127,19 +127,6 @@ notebooks/Fraud_Detection_SMOTE_Logistic_RF.ipynb
 
 Run the notebook from top to bottom.
 
-## 📋 OASIS INFOBYTE Task 3 Alignment
-
-- ✅ Dataset loading and fraud-percentage analysis
-- ✅ Fraud vs legitimate transaction-amount analysis
-- ✅ Time-of-day analysis
-- ✅ Explanation of misleading accuracy
-- ✅ SMOTE class-imbalance handling
-- ✅ Stratified train/test split
-- ✅ Logistic Regression + Random Forest
-- ✅ Precision, Recall, F1-score and ROC-AUC
-- ✅ Recall vs Precision trade-off and metric priority
-- ✅ Random Forest feature importance
-- ✅ Scalability discussion for 1 million transactions/hour
 
 ## 🛠️ Technologies
 
