@@ -5,10 +5,14 @@ nb_path = Path("DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb")
 nb = nbformat.read(nb_path, as_version=4)
 
 replacements = {
-    "fig, ax = plt.subplots(figsize=(12, 5))": "fig, ax = plt.subplots(figsize=(14, 6), constrained_layout=True)",
-    "fig, ax = plt.subplots(figsize=(10, 5))": "fig, ax = plt.subplots(figsize=(12, 6), constrained_layout=True)",
-    "fig, ax = plt.subplots(figsize=(10, 6))": "fig, ax = plt.subplots(figsize=(12, 7), constrained_layout=True)",
-    "fig, ax = plt.subplots(figsize=(7, 5))": "fig, ax = plt.subplots(figsize=(8, 6), constrained_layout=True)",
+    "fig, ax = plt.subplots(figsize=(12, 5))": "fig, ax = plt.subplots(figsize=(14, 6))",
+    "fig, ax = plt.subplots(figsize=(10, 5))": "fig, ax = plt.subplots(figsize=(12, 6))",
+    "fig, ax = plt.subplots(figsize=(10, 6))": "fig, ax = plt.subplots(figsize=(12, 7))",
+    "fig, ax = plt.subplots(figsize=(7, 5))": "fig, ax = plt.subplots(figsize=(8, 6))",
+    "fig, ax = plt.subplots(figsize=(14, 6), constrained_layout=True)": "fig, ax = plt.subplots(figsize=(14, 6))",
+    "fig, ax = plt.subplots(figsize=(12, 6), constrained_layout=True)": "fig, ax = plt.subplots(figsize=(12, 6))",
+    "fig, ax = plt.subplots(figsize=(12, 7), constrained_layout=True)": "fig, ax = plt.subplots(figsize=(12, 7))",
+    "fig, ax = plt.subplots(figsize=(8, 6), constrained_layout=True)": "fig, ax = plt.subplots(figsize=(8, 6))",
     "monthly_revenue.plot(ax=ax, marker='o')": "monthly_revenue.plot(ax=ax, marker='o', linewidth=2, markersize=5)",
     "monthly_aov.plot(ax=ax, marker='o')": "monthly_aov.plot(ax=ax, marker='o', linewidth=2, markersize=5)",
     "ax.tick_params(axis='x', rotation=45)": "ax.tick_params(axis='x', rotation=45, labelsize=9)\nax.grid(axis='y', alpha=0.25)",
