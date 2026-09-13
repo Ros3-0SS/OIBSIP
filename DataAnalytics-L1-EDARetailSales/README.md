@@ -201,7 +201,7 @@ These results indicate substantial revenue concentration in the UK market, a mea
 
 - **Python** — Analysis and programming
 - **Pandas** — Data manipulation
-- **NumPy** — Numerical analysis
+- **NumPy** — Numerical analysis and statistical calculations
 - **Matplotlib** — Data visualisation
 - **Seaborn** — Statistical visualisation
 - **Jupyter Notebook** — Interactive analysis
