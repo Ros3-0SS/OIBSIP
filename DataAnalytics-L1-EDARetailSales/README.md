@@ -4,7 +4,9 @@
 
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Analysis-013243?logo=numpy&logoColor=white)](https://numpy.org/)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-Visualisation-11557c)](https://matplotlib.org/)
+[![Seaborn](https://img.shields.io/badge/Seaborn-Statistical%20Visualisation-76B5C5)](https://seaborn.pydata.org/)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter&logoColor=white)](https://jupyter.org/)
 
 > **An exploratory data analysis project examining retail transactions, revenue trends, products, markets and customer-related data to uncover actionable business insights.**
