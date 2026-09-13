@@ -7,6 +7,18 @@ import nbformat
 NB_PATH = Path("DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb")
 
 
+def remove_old_interpretations(nb):
+    """Remove interpretation cells created by an earlier post-processing run."""
+    cleaned = []
+    for cell in nb.cells:
+        if cell.cell_type == "markdown":
+            text = cell.source.strip()
+            if text.startswith("**Interpretation:**") or text.startswith("Interpretation:"):
+                continue
+        cleaned.append(cell)
+    nb.cells = cleaned
+
+
 def refresh_visuals(nb):
     replacements = {
         "fig, ax = plt.subplots(figsize=(12, 5))": "fig, ax = plt.subplots(figsize=(14, 6))",
@@ -24,14 +36,18 @@ def refresh_visuals(nb):
         "sns.heatmap(corr, annot=True, fmt='.2f', cmap='Blues', ax=ax)": "sns.heatmap(corr, annot=True, fmt='.2f', cmap='Blues', linewidths=0.5, square=True, ax=ax)",
     }
 
+    remove_old_interpretations(nb)
+
     for cell in nb.cells:
         if cell.cell_type != "code":
             continue
         src = cell.source
         for old, new in replacements.items():
             src = src.replace(old, new)
-        if "display(fig)" in src and "plt.show()" not in src:
-            src = src.replace("display(fig)", "display(fig)\nplt.show()")
+
+        # Do not add plt.show() after display(fig): in Jupyter this renders the
+        # same figure twice. display(fig) is sufficient for the embedded output.
+        src = src.replace("display(fig)\nplt.show()", "display(fig)")
         cell.source = src
 
     if not any(
@@ -52,17 +68,19 @@ def refresh_visuals(nb):
                 "## Visualisation standards\n\n"
                 "All business charts are rendered directly in this notebook and saved to `outputs/` at high resolution. "
                 "Chart sizes, labels, axis spacing and gridlines are tuned for readability. Each visual is followed immediately "
-                "by a separate interpretation and business implication so the analysis is self-contained."
+                "by its own interpretation and business implication."
             )
             nb.cells.insert(insert_at, note)
 
 
 def split_interpretation_outputs(nb):
-    """Move rendered Markdown observations out of code-cell outputs into Markdown cells.
+    """Move rendered Markdown observations into clean Markdown cells.
 
-    This keeps the notebook presentation as: chart/table -> interpretation -> next chart/table.
-    It operates on executed output, so dynamic f-strings are preserved exactly as rendered.
+    The final notebook order is visual/table -> interpretation -> next visual/table.
+    Existing interpretation cells are removed first so repeated workflow runs cannot
+    duplicate them.
     """
+    remove_old_interpretations(nb)
     new_cells = []
     moved = 0
 
@@ -80,6 +98,14 @@ def split_interpretation_outputs(nb):
                     markdown_text = "".join(markdown_data)
                 else:
                     markdown_text = markdown_data
+
+                # Keep the interpretation as clean prose rather than a decorated heading.
+                markdown_text = markdown_text.strip()
+                if markdown_text.startswith("**Interpretation:**"):
+                    markdown_text = markdown_text[len("**Interpretation:**"):].strip()
+                elif markdown_text.startswith("Interpretation:"):
+                    markdown_text = markdown_text[len("Interpretation:"):].strip()
+
                 markdown_cells.append(nbformat.v4.new_markdown_cell(markdown_text))
                 moved += 1
             else:
@@ -107,7 +133,7 @@ def main():
     if args.postprocess:
         moved = split_interpretation_outputs(nb)
         nbformat.write(nb, NB_PATH)
-        print(f"Moved {moved} rendered interpretation(s) into separate Markdown cells in {NB_PATH}")
+        print(f"Moved {moved} interpretation(s) into separate clean Markdown cells in {NB_PATH}")
     else:
         refresh_visuals(nb)
         nbformat.write(nb, NB_PATH)
