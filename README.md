@@ -15,7 +15,7 @@ An end-to-end exploratory data analysis of online retail transactions, covering 
 
 The project demonstrates a complete data analytics workflow, from raw data preparation and feature engineering through exploratory analysis and visualisation to actionable business insights.
 
-The notebook is automatically validated using **GitHub Actions**, which executes the analysis from start to finish and verifies the expected outputs without making automated commits to the `main` branch.
+The notebook is automatically validated using **GitHub Actions**, which refreshes the notebook visual formatting, executes the analysis from start to finish, verifies the expected outputs, and commits the refreshed notebook/output files back to the repository.
 
 #### Task 2 — Online Retail Customer Segmentation
 `DataAnalytics-L1-CustomerSegmentation/`
@@ -59,7 +59,7 @@ Machine-learning fraud detection on a heavily imbalanced financial transaction d
 
 - **GitHub Actions** — Automated execution and validation of the Task 1 EDA notebook
 - **nbconvert** — Non-interactive notebook execution
-- **actions/upload-artifact** — Stores workflow-generated outputs without automatically committing them to `main`
+- **nbformat** — Notebook processing used by the visual-refresh script
 
 ---
 
@@ -80,6 +80,8 @@ OIBSIP/
 │   ├── 📄 requirements.txt
 │   ├── 📄 .gitignore
 │   ├── 📓 EDA_Retail_Sales.ipynb
+│   ├── 📂 scripts/
+│   │   └── 📄 improve_notebook_visuals.py
 │   ├── 📂 data/
 │   │   ├── 📂 raw/
 │   │   │   └── 📄 online_retail.csv
@@ -136,12 +138,13 @@ The workflow:
 1. Checks out the repository with Git LFS support.
 2. Sets up Python 3.11.
 3. Installs the project's required dependencies.
-4. Executes `EDA_Retail_Sales.ipynb` from top to bottom.
-5. Verifies the cleaned dataset and required visualisations.
-6. Confirms that notebook code cells were executed successfully.
-7. Uploads the executed notebook, cleaned dataset and generated outputs as a workflow artifact.
+4. Runs the EDA visual-refresh script from `DataAnalytics-L1-EDARetailSales/scripts/`.
+5. Executes `EDA_Retail_Sales.ipynb` from top to bottom.
+6. Verifies the cleaned dataset and required visualisations.
+7. Confirms that notebook code cells were executed successfully and that outputs are embedded in the executed notebook.
+8. Commits the refreshed notebook, generated outputs and cleaned dataset back to `main`.
 
-The workflow has **read-only repository permissions** and does not automatically write generated files back to the `main` branch.
+This keeps the committed EDA notebook and project outputs aligned with the automated workflow.
 
 ---
 
