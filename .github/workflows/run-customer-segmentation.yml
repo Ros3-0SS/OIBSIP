@@ -28,7 +28,7 @@ jobs:
           pip install -r DataAnalytics-L1-CustomerSegmentation/requirements.txt
           pip install jupyter nbconvert ucimlrepo
 
-      - name: Patch notebook for current UCI package and OASIS visualisation requirements
+      - name: Patch notebook for current UCI package, OASIS visualisation requirements and canonical output names
         working-directory: DataAnalytics-L1-CustomerSegmentation/notebooks
         run: |
           python - <<'PY'
@@ -36,11 +36,25 @@ jobs:
           from pathlib import Path
           p = Path('Online_Retail_Customer_Segmentation.ipynb')
           nb = json.loads(p.read_text(encoding='utf-8'))
+          output_name_map = {
+              "monthly_revenue_trend.png": "01_monthly_revenue_trend.png",
+              "top_10_countries_by_revenue.png": "02_top_10_countries_revenue.png",
+              "top_10_products_by_revenue.png": "03_top_10_products_revenue.png",
+              "recency_distribution.png": "04_recency_distribution.png",
+              "frequency_distribution.png": "05_frequency_distribution.png",
+              "monetary_distribution.png": "06_monetary_distribution.png",
+              "customers_per_segment.png": "08_customers_per_segment.png",
+              "rfm_by_segment.png": "09_average_rfm_by_segment.png",
+              "customer_segments_scatter.png": "10_frequency_vs_monetary_segments.png",
+              "cluster_selection.png": "cluster_selection.png"
+          }
           for cell in nb['cells']:
               if cell.get('cell_type') == 'code':
                   src = ''.join(cell.get('source', []))
                   src = src.replace('online_retail.data.features.copy()', 'online_retail.data.original.copy()')
                   src = src.replace('plt.show\\n', 'plt.show()\\n')
+                  for old_name, new_name in output_name_map.items():
+                      src = src.replace(f"OUTPUTS/'{old_name}'", f"OUTPUTS/'{new_name}'")
                   cell['source'] = src.splitlines(True)
           if not any('Recency vs Frequency' in ''.join(c.get('source', [])) for c in nb['cells']):
               nb['cells'].extend([
@@ -51,7 +65,7 @@ jobs:
                       '    subset = rfm[rfm[\\'Cluster\\'] == cluster]\\n',
                       '    ax.scatter(subset[\\'Recency\\'], subset[\\'Frequency\\'], label=f\\'Cluster {cluster}\\', alpha=0.6)\\n',
                       'ax.set_title(\\'Customer Segments: Recency vs Frequency\\')\\n',
-                      'ax.set_xlabel(\\'Recency (days)\\')\\n',
+                      'ax.set_xlabel(\\'Recency (days)\\n',
                       'ax.set_ylabel(\\'Frequency (unique invoices)\\')\\n',
                       'ax.legend(title=\\'Segment\\')\\n',
                       'plt.tight_layout()\\n',
@@ -82,6 +96,19 @@ jobs:
           p.write_text(json.dumps(nb, ensure_ascii=False, indent=1), encoding='utf-8')
           PY
 
+      - name: Remove legacy duplicate output filenames
+        working-directory: DataAnalytics-L1-CustomerSegmentation/outputs
+        run: |
+          rm -f monthly_revenue_trend.png \
+                top_10_countries_by_revenue.png \
+                top_10_products_by_revenue.png \
+                recency_distribution.png \
+                frequency_distribution.png \
+                monetary_distribution.png \
+                customers_per_segment.png \
+                rfm_by_segment.png \
+                customer_segments_scatter.png
+
       - name: Execute notebook from top to bottom
         working-directory: DataAnalytics-L1-CustomerSegmentation/notebooks
         run: |
@@ -100,6 +127,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Execute and verify Customer Segmentation notebook"
+            git commit -m "Align Customer Segmentation outputs with notebook"
             git push
           fi
