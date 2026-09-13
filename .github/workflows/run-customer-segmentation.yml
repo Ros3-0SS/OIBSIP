@@ -3,8 +3,6 @@ name: Execute Customer Segmentation Notebook
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'DataAnalytics-L1-CustomerSegmentation/notebooks/Online_Retail_Customer_Segmentation.ipynb'
 
 permissions:
   contents: write
