@@ -50,7 +50,7 @@ jobs:
           jupyter nbconvert --to notebook --execute EDA_Retail_Sales.ipynb --output EDA_Retail_Sales.ipynb --ExecutePreprocessor.timeout=600 --ExecutePreprocessor.kernel_name=python3
 
       - name: Separate chart interpretations from code outputs
-        run: python scripts/improve_notebook_visuals.py --postprocess
+        run: python DataAnalytics-L1-EDARetailSales/scripts/improve_notebook_visuals.py --postprocess
 
       - name: Verify generated outputs and embedded notebook results
         working-directory: DataAnalytics-L1-EDARetailSales
