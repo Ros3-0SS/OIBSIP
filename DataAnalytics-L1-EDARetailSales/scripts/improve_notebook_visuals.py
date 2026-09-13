@@ -19,19 +19,18 @@ def clean_interpretation_markdown(cell):
 
 
 def remove_repeated_markdown_cells(nb):
-    """Remove consecutive duplicate Markdown cells so the notebook stays idempotent."""
+    """Remove duplicate Markdown cells anywhere in the notebook, not only when adjacent."""
     cleaned = []
-    previous_markdown = None
+    seen_markdown = set()
 
     for cell in nb.cells:
         if cell.cell_type == "markdown":
             clean_interpretation_markdown(cell)
             current = cell.source.strip()
-            if current and current == previous_markdown:
-                continue
-            previous_markdown = current
-        else:
-            previous_markdown = None
+            if current:
+                if current in seen_markdown:
+                    continue
+                seen_markdown.add(current)
         cleaned.append(cell)
 
     nb.cells = cleaned
@@ -133,7 +132,7 @@ def refresh_visuals(nb):
 
 
 def split_interpretation_outputs(nb):
-    """Move any remaining rendered Markdown observations into clean Markdown cells."""
+    """Move rendered Markdown observations into separate cells immediately after their code cell."""
     new_cells = []
     moved = 0
 
@@ -148,7 +147,12 @@ def split_interpretation_outputs(nb):
             markdown_data = output.get("data", {}).get("text/markdown")
             if markdown_data:
                 markdown_text = "".join(markdown_data) if isinstance(markdown_data, list) else markdown_data
-                markdown_text = markdown_text.strip().replace("**📌 Observation:** ", "").replace("**💼 Business implication:** ", "").replace("**Interpretation:** ", "")
+                markdown_text = (
+                    markdown_text.strip()
+                    .replace("**📌 Observation:** ", "")
+                    .replace("**💼 Business implication:** ", "")
+                    .replace("**Interpretation:** ", "")
+                )
                 markdown_cells.append(nbformat.v4.new_markdown_cell(markdown_text))
                 moved += 1
             else:
