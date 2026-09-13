@@ -79,3 +79,5 @@ jobs:
             DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv
             DataAnalytics-L1-EDARetailSales/outputs/
           if-no-files-found: error
+
+# Triggered by the notebook/output refresh request so the committed .ipynb is executed and saved with embedded outputs.
