@@ -45,8 +45,7 @@ jobs:
               "monetary_distribution.png": "06_monetary_distribution.png",
               "customers_per_segment.png": "08_customers_per_segment.png",
               "rfm_by_segment.png": "09_average_rfm_by_segment.png",
-              "customer_segments_scatter.png": "10_frequency_vs_monetary_segments.png",
-              "cluster_selection.png": "cluster_selection.png"
+              "customer_segments_scatter.png": "10_frequency_vs_monetary_segments.png"
           }
           for cell in nb['cells']:
               if cell.get('cell_type') == 'code':
@@ -65,7 +64,7 @@ jobs:
                       '    subset = rfm[rfm[\\'Cluster\\'] == cluster]\\n',
                       '    ax.scatter(subset[\\'Recency\\'], subset[\\'Frequency\\'], label=f\\'Cluster {cluster}\\', alpha=0.6)\\n',
                       'ax.set_title(\\'Customer Segments: Recency vs Frequency\\')\\n',
-                      'ax.set_xlabel(\\'Recency (days)\\n',
+                      'ax.set_xlabel(\\'Recency (days)\\')\\n',
                       'ax.set_ylabel(\\'Frequency (unique invoices)\\')\\n',
                       'ax.legend(title=\\'Segment\\')\\n',
                       'plt.tight_layout()\\n',
