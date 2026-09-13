@@ -154,18 +154,7 @@ These are documented **dataset limitations**, not missing calculations.
 
 ## 📊 Visualisations & Written Observations
 
-Every chart has a corresponding visible observation in the notebook and `outputs/findings.md`:
-
-| Chart | Observation |
-|---|---|
-| Monthly revenue trend | **2011-11** is the peak month at **£1,509,496.33**, showing a strong late-year sales peak. |
-| Quarterly revenue trend | **2011Q4** is the strongest quarter at **£3,303,268.31**, confirming the late-year increase extends beyond one month. |
-| Monthly AOV | **2011-12** has the highest AOV at **£779.97**, while **2011-04** has the lowest at **£431.63**; overall AOV is **£534.40**. |
-| Top 10 countries by revenue | The **United Kingdom contributes 84.6%** of total revenue, showing strong market concentration. |
-| Top 10 countries by orders | The UK leads with **18,019 unique invoices**, reinforcing its importance. |
-| Top 10 products by units sold | **PAPER CRAFT , LITTLE BIRDIE** leads with **80,995 units**. |
-| Top 10 products by revenue | **REGENCY CAKESTAND 3 TIER** leads at **£174,484.74** after non-product lines are excluded. |
-| Correlation heatmap | **Quantity–Revenue r = 0.91**; the strong relationship is expected because Revenue = Quantity × UnitPrice. |
+Every chart has a corresponding visible observation in the notebook and `outputs/findings.md`.
 
 ---
 
@@ -180,8 +169,6 @@ Every chart has a corresponding visible observation in the notebook and `outputs
 - The **top 10 countries contribute approximately 97.2% of total revenue**.
 - The large mean–median differences show that transaction values are skewed, so median and standard deviation are important alongside the mean.
 - The dataset does not support age/gender analysis or reliable product-category analysis.
-
-These results indicate substantial revenue concentration in the UK market, a meaningful difference between product volume and product revenue rankings, and variation in average basket value across months.
 
 ---
 
@@ -226,11 +213,16 @@ DataAnalytics-L1-EDARetailSales/
 │   ├── monthly_aov.svg
 │   └── *.png                           ← Generated visualisations
 │
+├── 📂 scripts/
+│   └── improve_notebook_visuals.py    ← Refreshes notebook visual formatting before automated execution
+│
 ├── 📓 EDA_Retail_Sales.ipynb
 ├── 📄 requirements.txt
 ├── 📄 .gitignore
 └── 📄 README.md
 ```
+
+The `scripts/` folder contains the repository automation helper used by the GitHub Actions workflow to refresh notebook visual formatting before the notebook is executed and its outputs are embedded.
 
 ---
 
@@ -274,8 +266,6 @@ EDA_Retail_Sales.ipynb
 ```
 
 Run the notebook cells from top to bottom. The notebook reads the **raw** dataset from `data/raw/online_retail.csv`, performs the cleaning steps, writes the cleaned dataset to `data/cleaned/online_retail_cleaned.csv`, and generates the analysis outputs and visualisations.
-
-> **Important:** Do not replace the raw input with the cleaned dataset. The two files serve different purposes in the project pipeline.
 
 ---
 
