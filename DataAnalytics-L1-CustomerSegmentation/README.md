@@ -1,23 +1,26 @@
-#  Online Retail Customer Segmentation
+# 🛍️ Online Retail Customer Segmentation
 
 ### OASIS INFOBYTE SIP — Data Analytics Level 1 • Task 2
 
 [![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![NumPy](https://img.shields.io/badge/NumPy-Numerical%20Computing-013243?logo=numpy&logoColor=white)](https://numpy.org/)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-Visualisation-11557C?logo=matplotlib&logoColor=white)](https://matplotlib.org/)
+[![Seaborn](https://img.shields.io/badge/Seaborn-Statistical%20Visualisation-4C72B0)](https://seaborn.pydata.org/)
 [![Scikit--learn](https://img.shields.io/badge/Scikit--learn-Machine%20Learning-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?logo=jupyter&logoColor=white)](https://jupyter.org/)
 
-> **A customer segmentation project using RFM analysis and K-Means clustering to turn retail transaction data into actionable customer insights.**
+> **Turning retail transaction data into meaningful customer segments using RFM analysis and K-Means clustering.**
 
 ---
 
 ## 📌 Project Overview
 
-Understanding **who your customers are, how often they buy, and how much they spend** is essential for effective customer retention and marketing.
+Understanding **who your customers are, how recently they purchase, how frequently they buy, and how much they spend** is essential for effective customer retention and marketing.
 
-In this project, I analyse the **UCI Online Retail dataset** and use **Recency, Frequency and Monetary (RFM) analysis** together with **K-Means clustering** to identify groups of customers with similar purchasing behaviour.
+In this project, I analyse the **Online Retail dataset** and combine **Recency, Frequency and Monetary (RFM) analysis** with **K-Means clustering** to identify groups of customers with similar purchasing behaviour.
 
-The final segments can help a business design more targeted retention, reactivation, cross-selling and customer-value strategies.
+The resulting customer profiles can help a business develop more targeted **retention, reactivation, cross-selling and customer-value strategies**.
 
 ---
 
@@ -48,28 +51,49 @@ The raw Excel dataset is **not stored in this repository** because of its file s
 
 ---
 
-## 🔬 Methodology
+## 🧹 Data Cleaning & Preparation
 
-### 1️⃣ Data acquisition
-The Online Retail dataset is loaded directly from the UCI Machine Learning Repository.
+Before performing customer segmentation, the transactional data is prepared by removing records that could distort customer-level analysis.
 
-### 2️⃣ Data cleaning
-The analysis removes:
+The cleaning process removes:
 
-- Cancelled invoices
-- Returned/negative-quantity transactions
-- Non-positive prices
-- Transactions without a customer ID
-- Duplicate records
+- ❌ Cancelled invoices
+- ❌ Returned / negative-quantity transactions
+- ❌ Non-positive prices
+- ❌ Transactions without a customer ID
+- ❌ Duplicate records
 
-A `Revenue` variable is then calculated as:
+A `Revenue` variable is then calculated using:
 
 ```text
 Revenue = Quantity × UnitPrice
 ```
 
-### 3️⃣ RFM analysis
-Each customer is evaluated using:
+This creates a clean transaction-level foundation for the RFM analysis.
+
+---
+
+## 🔎 Exploratory Data Analysis
+
+The project explores the retail data before clustering customers, including:
+
+### 📦 Product Analysis
+
+Product-level purchasing patterns are examined to understand which items contribute to customer purchasing activity.
+
+### 🌍 Country Analysis
+
+Customer and transaction patterns are explored across countries to provide geographic context for the retailer's customer base.
+
+### 💷 Revenue Analysis
+
+Transaction revenue is calculated to support monetary-value analysis and customer profiling.
+
+---
+
+## 📊 RFM Analysis
+
+Each customer is represented using three core behavioural metrics:
 
 | Metric | Meaning |
 |---|---|
@@ -77,35 +101,55 @@ Each customer is evaluated using:
 | 🔁 **Frequency** | How often the customer purchased |
 | 💷 **Monetary** | How much revenue the customer generated |
 
-### 4️⃣ Feature preparation
-Because RFM variables can be highly skewed, a log transformation is applied before standardisation.
-
-### 5️⃣ Cluster selection
-Candidate values of **k** are compared using:
-
-- 📉 Elbow Method / inertia
-- 📈 Silhouette Score
-
-### 6️⃣ K-Means clustering
-The selected number of clusters is used to train the final K-Means model.
-
-### 7️⃣ Customer profiling
-The resulting groups are compared using their RFM characteristics so that each cluster can be interpreted from a business perspective.
+These metrics transform individual transactions into a **customer-level behavioural profile** that can be used for segmentation.
 
 ---
 
-## 💡 Business Insights
+## ⚙️ Feature Engineering & Transformation
 
-The customer profiles can support strategies such as:
+RFM variables can be highly skewed, particularly **Frequency** and **Monetary** values.
+
+To improve their suitability for clustering:
+
+1. RFM features are calculated at customer level.
+2. A **log transformation** is applied to reduce the effect of strong skewness.
+3. Features are **standardised** so that variables with different scales do not dominate the clustering process.
+
+---
+
+## 📐 Choosing the Number of Clusters
+
+Two evaluation techniques are used to assess candidate cluster counts:
+
+- 📉 **Elbow Method** — examines within-cluster inertia as the number of clusters increases.
+- 📈 **Silhouette Score** — evaluates how well customers fit within their assigned clusters compared with neighbouring clusters.
+
+These measures provide a more evidence-based approach to selecting the final value of **k** rather than choosing the number of segments arbitrarily.
+
+---
+
+## 🤖 K-Means Customer Segmentation
+
+After selecting the cluster count, **K-Means clustering** is applied to the transformed and standardised RFM features.
+
+The algorithm groups customers according to similarities in their purchasing behaviour, producing distinct customer segments that can then be interpreted through their RFM profiles.
+
+> **Important:** K-Means cluster numbers are arbitrary. A cluster labelled `0` is not inherently better or worse than a cluster labelled `1`; interpretation must be based on the actual RFM characteristics of each segment.
+
+---
+
+## 💡 Customer Segment Strategies
+
+The customer profiles can support different business strategies depending on their observed RFM behaviour:
 
 | Customer behaviour | Potential strategy |
 |---|---|
-| ⭐ High-value and loyal | Retention rewards, early access and personalised offers |
-| 💎 High monetary value but less frequent | Cross-selling and repeat-purchase campaigns |
-| ⚠️ Inactive / at-risk | Reactivation campaigns and targeted incentives |
-| 🛒 Frequent but lower-value purchases | Bundles and recommendations to increase basket value |
+| ⭐ **High-value and loyal** | Retention rewards, early access and personalised offers |
+| 💎 **High monetary value but less frequent** | Cross-selling and repeat-purchase campaigns |
+| ⚠️ **Inactive / at-risk** | Reactivation campaigns and targeted incentives |
+| 🛒 **Frequent but lower-value purchases** | Bundles and recommendations to increase basket value |
 
-> **Note:** K-Means cluster numbers are arbitrary. The segments should therefore be interpreted from their RFM profiles rather than simply by cluster number.
+The objective is to move beyond simply identifying clusters and translate customer behaviour into **actionable marketing decisions**.
 
 ---
 
@@ -114,7 +158,7 @@ The customer profiles can support strategies such as:
 - **Python** — Programming and analysis
 - **Pandas** — Data manipulation
 - **NumPy** — Numerical computing
-- **Matplotlib** — Visualisation
+- **Matplotlib** — Data visualisation
 - **Seaborn** — Statistical visualisation
 - **Scikit-learn** — Standardisation, K-Means and clustering evaluation
 - **Jupyter Notebook** — Interactive analysis
@@ -141,25 +185,25 @@ DataAnalytics-L1-CustomerSegmentation/
 
 ## ▶️ How to Run
 
-### 1. Clone the repository
+### 1️⃣ Clone the repository
 
 ```bash
 git clone https://github.com/Ros3-0SS/OIBSIP.git
 ```
 
-### 2. Open the project folder
+### 2️⃣ Open the project folder
 
 ```bash
 cd OIBSIP/DataAnalytics-L1-CustomerSegmentation
 ```
 
-### 3. Install the required packages
+### 3️⃣ Install the required packages
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Open the notebook
+### 4️⃣ Open the notebook
 
 Open:
 
@@ -167,17 +211,33 @@ Open:
 notebooks/Online_Retail_Customer_Segmentation.ipynb
 ```
 
-### 5. Run the notebook from top to bottom
+### 5️⃣ Run the notebook from top to bottom
 
 An internet connection is required because the notebook retrieves the dataset from the UCI Machine Learning Repository.
 
 ---
 
-## 📈 Portfolio Skills Demonstrated
+## 📈 Skills Demonstrated
 
-This project demonstrates an end-to-end data analytics and machine learning workflow:
+This project demonstrates an end-to-end **data analytics and unsupervised machine learning workflow**:
 
-**Data acquisition → Data cleaning → Exploratory analysis → Feature engineering → RFM analysis → Feature scaling → Unsupervised machine learning → Cluster evaluation → Customer profiling → Business recommendations**
+**Data acquisition → Data cleaning → Exploratory analysis → Revenue calculation → RFM analysis → Feature engineering → Data transformation → Feature scaling → Cluster evaluation → K-Means clustering → Customer profiling → Business recommendations**
+
+---
+
+## ✅ Oasis Infobyte Task Alignment
+
+This project addresses the core customer segmentation workflow through:
+
+- ✔️ Data exploration and preparation
+- ✔️ Customer-level analysis
+- ✔️ RFM analysis
+- ✔️ Feature transformation and standardisation
+- ✔️ Elbow Method evaluation
+- ✔️ Silhouette Score evaluation
+- ✔️ K-Means clustering
+- ✔️ Customer segment profiling
+- ✔️ Business-oriented interpretation and recommendations
 
 ---
 
