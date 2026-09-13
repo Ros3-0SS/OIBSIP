@@ -7,6 +7,12 @@ on:
       - 'DataAnalytics-L1-EDARetailSales/data/**'
       - 'DataAnalytics-L1-EDARetailSales/scripts/**'
       - '.github/workflows/run-eda-retail-sales.yml'
+  pull_request:
+    paths:
+      - 'DataAnalytics-L1-EDARetailSales/EDA_Retail_Sales.ipynb'
+      - 'DataAnalytics-L1-EDARetailSales/data/**'
+      - 'DataAnalytics-L1-EDARetailSales/scripts/**'
+      - '.github/workflows/run-eda-retail-sales.yml'
   workflow_dispatch:
 
 permissions:
@@ -59,6 +65,7 @@ jobs:
           PY
 
       - name: Commit executed notebook and refreshed visuals
+        if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -79,5 +86,3 @@ jobs:
             DataAnalytics-L1-EDARetailSales/data/cleaned/online_retail_cleaned.csv
             DataAnalytics-L1-EDARetailSales/outputs/
           if-no-files-found: error
-
-# Triggered by the notebook/output refresh request so the committed .ipynb is executed and saved with embedded outputs.
